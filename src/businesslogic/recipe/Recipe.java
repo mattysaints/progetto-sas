@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Recipe {
+public class Recipe implements KitchenItem{
     private static final Map<Integer, Recipe> all = new HashMap<>();
 
     private int id;

@@ -9,6 +9,7 @@ import persistence.ResultHandler;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 public class EventInfo implements EventItemInfo {
     private int id;
@@ -17,7 +18,13 @@ public class EventInfo implements EventItemInfo {
     private Date dateEnd;
     private int participants;
     private User organizer;
-
+    private String customer;
+    private String location;
+    private boolean isOccuring;
+    private boolean isTerminated;
+    private boolean isCancelled;
+    private String frequency;
+    private Date endDate;
     private ObservableList<ServiceInfo> services;
 
     public EventInfo(String name) {
@@ -58,4 +65,26 @@ public class EventInfo implements EventItemInfo {
         }
         return all;
     }
+
+    public void setOccuring(boolean occuring) {
+        isOccuring = occuring;
+    }
+
+    public void setTerminated(boolean terminated) {
+        isTerminated = terminated;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        isCancelled = cancelled;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+
 }
