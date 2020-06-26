@@ -17,4 +17,9 @@ public class Start {
 
     public void initialize() {
     }
+
+    @FXML
+    public void beginKitchenTaskManagement() {
+        mainPaneController.startKitchenTaskManagement();
+    }
 }
