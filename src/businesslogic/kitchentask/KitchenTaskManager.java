@@ -1,12 +1,12 @@
-package businesslogic.kitchenTask;
+package businesslogic.kitchentask;
 
 import businesslogic.CatERing;
-import businesslogic.CookException;
+import businesslogic.StaffException;
+import businesslogic.TurnException;
 import businesslogic.UseCaseLogicException;
 import businesslogic.event.ServiceInfo;
 import businesslogic.recipe.KitchenItem;
 import businesslogic.turn.Turn;
-import businesslogic.TurnException;
 import businesslogic.user.User;
 
 import java.util.ArrayList;
@@ -68,15 +68,15 @@ public class KitchenTaskManager {
         return currentKitchenTaskSummary;
     }
 
-    public void assignKitchenTask(KitchenTask kitchenTask, Turn turn, User cook, int time, String quantity) throws UseCaseLogicException, TurnException, CookException {
-        if(currentKitchenTaskSummary == null)
+    public void assignKitchenTask(KitchenTask kitchenTask, Turn turn, User cook, int time, String quantity) throws UseCaseLogicException, TurnException, StaffException {
+        if (currentKitchenTaskSummary == null)
             throw new UseCaseLogicException();
-        if(turn.isFull())
+        if (turn.isFull())
             throw new TurnException();
-        if(!cook.isAvailable(turn))
-            throw new CookException();
+        if (!cook.isAvailable(turn))
+            throw new StaffException();
 
-        currentKitchenTaskSummary.assignKitchenTask(kitchenTask,turn,cook,time,quantity);
+        currentKitchenTaskSummary.assignKitchenTask(kitchenTask, turn, cook, time, quantity);
         this.notifyKitchenTaskAssigned(kitchenTask);
     }
 

@@ -1,4 +1,4 @@
-package businesslogic.kitchenTask;
+package businesslogic.kitchentask;
 
 import businesslogic.recipe.KitchenItem;
 import businesslogic.turn.Turn;

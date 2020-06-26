@@ -15,6 +15,7 @@ import java.util.Map;
 public class Recipe implements KitchenItem{
     private static final Map<Integer, Recipe> all = new HashMap<>();
 
+    private int difficulty;
     private int id;
     private String name;
 
@@ -89,6 +90,6 @@ public class Recipe implements KitchenItem{
 
     @Override
     public int getDifficulty() {
-        return 0;
+        return difficulty;
     }
 }
