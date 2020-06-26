@@ -1,4 +1,4 @@
-package businesslogic.kitchenTask;
+package businesslogic.kitchentask;
 
 import businesslogic.CatERing;
 import businesslogic.StaffException;

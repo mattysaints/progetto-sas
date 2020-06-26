@@ -1,6 +1,6 @@
 package businesslogic.event;
 
-import businesslogic.kitchenTask.KitchenTaskSummary;
+import businesslogic.kitchentask.KitchenTaskSummary;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.PersistenceManager;

@@ -1,4 +1,4 @@
-package businesslogic.kitchenTask;
+package businesslogic.kitchentask;
 
 public interface KitchenTaskEventReceiver {
     void updateKitchenTaskAdded(KitchenTaskSummary kitchenTaskSummary, KitchenTask kitchenTask);
