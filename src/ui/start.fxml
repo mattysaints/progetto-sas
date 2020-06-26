@@ -7,7 +7,8 @@
           vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="ui.Start">
    <children>
-      <Button layoutX="289.0" layoutY="180.0" mnemonicParsing="false" text="Gestire compiti della cucina">
+      <Button layoutX="289.0" layoutY="180.0" onAction="#beginKitchenTaskManagement" mnemonicParsing="false"
+              text="Gestire compiti della cucina">
          <font>
             <Font size="15.0"/>
          </font>
