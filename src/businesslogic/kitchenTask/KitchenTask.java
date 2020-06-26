@@ -1,6 +1,8 @@
 package businesslogic.kitchenTask;
 
 import businesslogic.recipe.KitchenItem;
+import businesslogic.turn.Turn;
+import businesslogic.user.User;
 
 import java.util.Comparator;
 
@@ -18,6 +20,8 @@ public class KitchenTask {
                     .thenComparing((KitchenTask kt) -> kt.getPreparationTime())
                     .thenComparingInt((KitchenTask kt) -> kt.getKitchenItem().getDifficulty());
 
+    private Turn turn;
+    private User cook;
     private int preparationTime;
     private String productQuantity;
     private boolean toPrepare;
@@ -46,5 +50,33 @@ public class KitchenTask {
 
     public boolean isCompleted() {
         return completed;
+    }
+
+    public Turn getTurn() {
+        return turn;
+    }
+
+    public void setTurn(Turn turn) {
+        this.turn = turn;
+    }
+
+    public User getCook() {
+        return cook;
+    }
+
+    public void setCook(User cook) {
+        this.cook = cook;
+    }
+
+    public void setPreparationTime(int preparationTime) {
+        this.preparationTime = preparationTime;
+    }
+
+    public String getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(String productQuantity) {
+        this.productQuantity = productQuantity;
     }
 }

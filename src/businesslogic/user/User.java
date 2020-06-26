@@ -1,5 +1,6 @@
 package businesslogic.user;
 
+import businesslogic.turn.Turn;
 import javafx.collections.FXCollections;
 import persistence.PersistenceManager;
 import persistence.ResultHandler;
@@ -28,6 +29,10 @@ public class User {
 
     public boolean isChef() {
         return roles.contains(Role.CHEF);
+    }
+
+    public boolean isAvailable(Turn turn) {
+        return true;
     }
 
     public String getUserName() {

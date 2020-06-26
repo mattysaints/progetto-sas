@@ -28,8 +28,16 @@ public class ServiceInfo implements EventItemInfo {
         return kitchenTaskSummary;
     }
 
+    public KitchenTaskSummary createKitchenTaskSummary(){
+        return new KitchenTaskSummary();
+    }
+
     public String toString() {
         return name + ": " + date + " (" + timeStart + "-" + timeEnd + "), " + participants + " pp.";
+    }
+
+    public void setKitchenTaskSummary(KitchenTaskSummary kitchenTaskSummary) {
+        this.kitchenTaskSummary = kitchenTaskSummary;
     }
 
     // STATIC METHODS FOR PERSISTENCE

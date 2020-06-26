@@ -1,9 +1,12 @@
 package businesslogic.kitchenTask;
 
 import businesslogic.CatERing;
+import businesslogic.CookException;
 import businesslogic.UseCaseLogicException;
 import businesslogic.event.ServiceInfo;
 import businesslogic.recipe.KitchenItem;
+import businesslogic.turn.Turn;
+import businesslogic.TurnException;
 import businesslogic.user.User;
 
 import java.util.ArrayList;
@@ -26,6 +29,16 @@ public class KitchenTaskManager {
         return currentKitchenTaskSummary;
     }
 
+    public KitchenTaskSummary createKitchenTaskSummary(ServiceInfo service) throws UseCaseLogicException {
+        User user = CatERing.getInstance().getUserManager().getCurrentUser();
+        if(service.getKitchenTaskSummary()!=null && user.isChef())
+            throw new UseCaseLogicException();
+
+        KitchenTaskSummary summary = service.createKitchenTaskSummary();
+        this.notifyKitchenTaskSummeryCreated(summary);
+        return summary;
+    }
+
     public void setCurrentKitchenTaskSummary(KitchenTaskSummary currentKitchenTaskSummary) {
         this.currentKitchenTaskSummary = currentKitchenTaskSummary;
     }
@@ -40,6 +53,13 @@ public class KitchenTaskManager {
         return kitchenTask;
     }
 
+    public void removeKitchenTask(KitchenTask kitchenTask) throws UseCaseLogicException {
+        if(currentKitchenTaskSummary == null && !currentKitchenTaskSummary.hasKitchenTask(kitchenTask))
+            throw new UseCaseLogicException();
+        currentKitchenTaskSummary.removeKitchenTask(kitchenTask);
+        this.notifyKitchenTaskRemoved(currentKitchenTaskSummary,kitchenTask);
+    }
+
     public KitchenTaskSummary sortKitchenTasks(Comparator<KitchenTask> ordering) throws UseCaseLogicException {
         if (currentKitchenTaskSummary == null)
             throw new UseCaseLogicException();
@@ -48,8 +68,36 @@ public class KitchenTaskManager {
         return currentKitchenTaskSummary;
     }
 
+    public void assignKitchenTask(KitchenTask kitchenTask, Turn turn, User cook, int time, String quantity) throws UseCaseLogicException, TurnException, CookException {
+        if(currentKitchenTaskSummary == null)
+            throw new UseCaseLogicException();
+        if(turn.isFull())
+            throw new TurnException();
+        if(!cook.isAvailable(turn))
+            throw new CookException();
+
+        currentKitchenTaskSummary.assignKitchenTask(kitchenTask,turn,cook,time,quantity);
+        this.notifyKitchenTaskAssigned(kitchenTask);
+    }
+
     private void notifyKitchenTaskAdded(KitchenTaskSummary kitchenTaskSummary, KitchenTask kitchenTask) {
         for (KitchenTaskEventReceiver er : eventReceivers)
             er.updateKitchenTaskAdded(kitchenTaskSummary, kitchenTask);
     }
+
+    private void notifyKitchenTaskSummeryCreated(KitchenTaskSummary summary) {
+        for (KitchenTaskEventReceiver er : eventReceivers)
+            er.updateKitchenTaskAdded(summary);
+    }
+
+    private void notifyKitchenTaskRemoved(KitchenTaskSummary currentKitchenTaskSummary, KitchenTask kitchenTask) {
+        for (KitchenTaskEventReceiver er : eventReceivers)
+            er.updateKitchenTaskRemoved(currentKitchenTaskSummary,kitchenTask);
+    }
+
+    private void notifyKitchenTaskAssigned(KitchenTask kitchenTask) {
+        for (KitchenTaskEventReceiver er : eventReceivers)
+            er.updateKitchenTaskAssigned(kitchenTask);
+    }
+
 }
