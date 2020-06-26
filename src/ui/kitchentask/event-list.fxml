@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="362.0" prefWidth="557.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.kitchentask.EventList">
+    <center>
+        <TreeView fx:id="eventList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </center>
+    <bottom>
+        <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="10.0" prefHeight="53.0" prefWidth="557.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" onAction="#createKitchenTaskSummary" text="Crea scheda" />
+                <Button fx:id="apriButton" disable="true" mnemonicParsing="false" onAction="#openKitchenTaskSummary" text="Apri scheda" />
+                <Button mnemonicParsing="false" text="Fine" />
+            </children>
+        </FlowPane>
+    </bottom>
+   <top>
+   </top>
+</BorderPane>

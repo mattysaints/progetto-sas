@@ -16,4 +16,7 @@ public class KitchenTaskManagement {
     public void initialize() {
 
     }
+
+    public void showCurrentKitchenTaskSummary() {
+    }
 }
