@@ -5,15 +5,12 @@ import businesslogic.UseCaseLogicException;
 import businesslogic.event.EventInfo;
 import businesslogic.event.EventItemInfo;
 import businesslogic.event.ServiceInfo;
-import businesslogic.menu.Menu;
-import businesslogic.menu.MenuException;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import ui.menu.MenuManagement;
 
 public class EventList {
 
@@ -21,10 +18,17 @@ public class EventList {
 
     @FXML
     public TreeView<EventItemInfo> eventList;
+    @FXML
+    private Button creaButton;
+    @FXML
+    private Button apriButton;
 
-    public void createKitchenTaskSummary(ActionEvent actionEvent) {
+    @FXML
+    private void createKitchenTaskSummary(ActionEvent actionEvent) {
+
     }
 
+    @FXML
     public void openKitchenTaskSummary(ActionEvent actionEvent) {
         try {
             EventItemInfo eventItemInfo = eventList.getSelectionModel().getSelectedItem().getValue();
@@ -49,7 +53,15 @@ public class EventList {
             }
         }
 
+
+        eventList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
+            apriButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
+                    || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() == null);
+
+            creaButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
+                    || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() != null);
+        });
+
         eventList.setRoot(root);
     }
-
 }

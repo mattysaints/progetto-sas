@@ -92,7 +92,7 @@ public class KitchenTaskManager {
 
     private void notifyKitchenTaskRemoved(KitchenTaskSummary currentKitchenTaskSummary, KitchenTask kitchenTask) {
         for (KitchenTaskEventReceiver er : eventReceivers)
-            er.updateKitchenTaskRemoved(currentKitchenTaskSummary,kitchenTask);
+            er.updateKitchenTaskRemoved(currentKitchenTaskSummary, kitchenTask);
     }
 
     private void notifyKitchenTaskAssigned(KitchenTask kitchenTask) {
@@ -100,4 +100,11 @@ public class KitchenTaskManager {
             er.updateKitchenTaskAssigned(kitchenTask);
     }
 
+    public void addEventReceiver(KitchenTaskEventReceiver eventReceiver) {
+        eventReceivers.add(eventReceiver);
+    }
+
+    public void removeEventReceiver(KitchenTaskEventReceiver eventReceiver) {
+        eventReceivers.remove(eventReceiver);
+    }
 }
