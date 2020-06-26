@@ -87,4 +87,8 @@ public class Recipe implements KitchenItem{
     }
 
 
+    @Override
+    public int getDifficulty() {
+        return 0;
+    }
 }
