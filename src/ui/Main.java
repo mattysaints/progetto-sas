@@ -62,7 +62,7 @@ public class Main {
 
     public void showStartPane() {
         startPaneController.initialize();
-        paneContainer.getChildren().remove(menuManagementPane);
+        paneContainer.getChildren().remove(0);
         paneContainer.getChildren().add(startPane);
     }
 

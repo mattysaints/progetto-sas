@@ -39,4 +39,9 @@ public class KitchenTaskSummary {
         kitchenTask.setPreparationTime(time);
         kitchenTask.setProductQuantity(quantity);
     }
+
+    @Override
+    public String toString() {
+        return "Foglio: " + kitchenTasks.size() + " compiti";
+    }
 }

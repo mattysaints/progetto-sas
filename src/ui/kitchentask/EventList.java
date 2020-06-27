@@ -6,7 +6,6 @@ import businesslogic.event.EventInfo;
 import businesslogic.event.EventItemInfo;
 import businesslogic.event.ServiceInfo;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
@@ -24,12 +23,18 @@ public class EventList {
     private Button apriButton;
 
     @FXML
-    private void createKitchenTaskSummary(ActionEvent actionEvent) {
-
+    private void creaButtonPressed() {
+        try {
+            EventItemInfo eventItemInfo = eventList.getSelectionModel().getSelectedItem().getValue();
+            CatERing.getInstance().getKitchenTaskManager().createKitchenTaskSummary((ServiceInfo) eventItemInfo);
+            kitchenTaskManagementController.showCurrentKitchenTaskSummary();
+        } catch (UseCaseLogicException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void openKitchenTaskSummary(ActionEvent actionEvent) {
+    public void apriButtonPressed() {
         try {
             EventItemInfo eventItemInfo = eventList.getSelectionModel().getSelectedItem().getValue();
             CatERing.getInstance().getKitchenTaskManager().selectKitchenTaskSummary((ServiceInfo) eventItemInfo);
@@ -37,6 +42,10 @@ public class EventList {
         } catch (UseCaseLogicException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void setParent(KitchenTaskManagement kitchenTaskManagement) {
+        kitchenTaskManagementController = kitchenTaskManagement;
     }
 
     public void initialize() {
@@ -63,5 +72,10 @@ public class EventList {
         });
 
         eventList.setRoot(root);
+    }
+
+    @FXML
+    private void fineButtonPressed() {
+        kitchenTaskManagementController.endKitchenTaskManagement();
     }
 }

@@ -1,6 +1,5 @@
 package businesslogic.event;
 
-import businesslogic.kitchentask.KitchenTask;
 import businesslogic.kitchentask.KitchenTaskSummary;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +35,10 @@ public class ServiceInfo implements EventItemInfo {
     }
 
     public String toString() {
-        return name + ": " + date + " (" + timeStart + "-" + timeEnd + "), " + participants + " pp.";
+        String s = name + ": " + date + " (" + timeStart + "-" + timeEnd + "), " + participants + " pp.";
+        if (kitchenTaskSummary != null)
+            s += " (" + kitchenTaskSummary + ")";
+        return s;
     }
 
     public void setKitchenTaskSummary(KitchenTaskSummary kitchenTaskSummary) {

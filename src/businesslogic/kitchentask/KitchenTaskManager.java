@@ -31,10 +31,12 @@ public class KitchenTaskManager {
 
     public KitchenTaskSummary createKitchenTaskSummary(ServiceInfo service) throws UseCaseLogicException {
         User user = CatERing.getInstance().getUserManager().getCurrentUser();
-        if(service.getKitchenTaskSummary()!=null && user.isChef())
+        if (service.getKitchenTaskSummary() != null && user.isChef())
             throw new UseCaseLogicException();
 
         KitchenTaskSummary summary = service.createKitchenTaskSummary();
+        this.setCurrentKitchenTaskSummary(summary);
+
         this.notifyKitchenTaskSummeryCreated(summary);
         return summary;
     }
