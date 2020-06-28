@@ -1,14 +1,13 @@
 package businesslogic.kitchentask;
 
+import businesslogic.event.ServiceInfo;
+
 public interface KitchenTaskEventReceiver {
+    void updateKitchenTaskSummaryCreated(ServiceInfo service, KitchenTaskSummary kitchenTaskSummary);
+
     void updateKitchenTaskAdded(KitchenTaskSummary kitchenTaskSummary, KitchenTask kitchenTask);
 
-    void updateKitchenTaskAdded(KitchenTaskSummary summary);
-
-    void updateKitchenTaskRemoved(KitchenTaskSummary currentKitchenTaskSummary, KitchenTask kitchenTask);
+    void updateKitchenTaskRemoved(KitchenTaskSummary kitchenTaskSummary, KitchenTask kitchenTask);
 
     void updateKitchenTaskAssigned(KitchenTask kitchenTask);
-
-    void updateKitchenTaskSummaryCreated(KitchenTaskSummary kitchenTaskSummary);
-
 }

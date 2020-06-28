@@ -14,10 +14,10 @@ public class KitchenTask {
     public static final Comparator<KitchenTask> DIFFICULT_FIRST =
             TO_PREPARE_NOT_COMPLETED_FIRST
                     .thenComparingInt((KitchenTask kt) -> kt.getKitchenItem().getDifficulty())
-                    .thenComparing((KitchenTask kt) -> kt.getPreparationTime());
+                    .thenComparing(KitchenTask::getPreparationTime);
     public static final Comparator<KitchenTask> LONG_FIRST =
             TO_PREPARE_NOT_COMPLETED_FIRST
-                    .thenComparing((KitchenTask kt) -> kt.getPreparationTime())
+                    .thenComparing(KitchenTask::getPreparationTime)
                     .thenComparingInt((KitchenTask kt) -> kt.getKitchenItem().getDifficulty());
 
     private Turn turn;
@@ -27,6 +27,7 @@ public class KitchenTask {
     private boolean toPrepare;
     private boolean completed;
     private KitchenItem kitchenItem;
+
 
     public KitchenTask(KitchenItem kitchenItem) {
         this.setKitchenItem(kitchenItem);
@@ -91,5 +92,19 @@ public class KitchenTask {
                 ", completed=" + completed +
                 ", kitchenItem=" + kitchenItem +
                 '}';
+    }
+
+    // STATIC METHODS FOR PERSISTENCE
+
+    public static void updateKitchenTask(KitchenTask kitchenTask) {
+        // TODO
+    }
+
+    public static void removeKitchenTask(int kitchenTaskSummary_id, KitchenTask kitchenTask) {
+        // TODO
+    }
+
+    public static void saveNewKitchenTask(int kitchenTaskSummary_id, KitchenTask kitchenTask) {
+        // TODO
     }
 }

@@ -37,7 +37,7 @@ public class KitchenTaskManager {
         KitchenTaskSummary summary = service.createKitchenTaskSummary();
         this.setCurrentKitchenTaskSummary(summary);
 
-        this.notifyKitchenTaskSummaryCreated(summary);
+        this.notifyKitchenTaskSummaryCreated(service, summary);
         return summary;
     }
 
@@ -56,7 +56,7 @@ public class KitchenTaskManager {
     }
 
     public void removeKitchenTask(KitchenTask kitchenTask) throws UseCaseLogicException {
-        if(currentKitchenTaskSummary == null && !currentKitchenTaskSummary.hasKitchenTask(kitchenTask))
+        if (currentKitchenTaskSummary == null || !currentKitchenTaskSummary.hasKitchenTask(kitchenTask))
             throw new UseCaseLogicException();
         currentKitchenTaskSummary.removeKitchenTask(kitchenTask);
         this.notifyKitchenTaskRemoved(currentKitchenTaskSummary,kitchenTask);
@@ -82,6 +82,8 @@ public class KitchenTaskManager {
         this.notifyKitchenTaskAssigned(kitchenTask);
     }
 
+    // <editor-fold desc="********** Event sender methods **********" defaultstate=collapsed>
+
     private void notifyKitchenTaskAdded(KitchenTaskSummary kitchenTaskSummary, KitchenTask kitchenTask) {
         for (KitchenTaskEventReceiver er : eventReceivers)
             er.updateKitchenTaskAdded(kitchenTaskSummary, kitchenTask);
@@ -98,9 +100,9 @@ public class KitchenTaskManager {
             er.updateKitchenTaskAssigned(kitchenTask);
     }
 
-    private void notifyKitchenTaskSummaryCreated(KitchenTaskSummary kitchenTaskSummary) {
+    private void notifyKitchenTaskSummaryCreated(ServiceInfo service, KitchenTaskSummary kitchenTaskSummary) {
         for (KitchenTaskEventReceiver er : eventReceivers)
-            er.updateKitchenTaskSummaryCreated(kitchenTaskSummary);
+            er.updateKitchenTaskSummaryCreated(service, kitchenTaskSummary);
     }
 
     public void addEventReceiver(KitchenTaskEventReceiver eventReceiver) {
@@ -110,6 +112,8 @@ public class KitchenTaskManager {
     public void removeEventReceiver(KitchenTaskEventReceiver eventReceiver) {
         eventReceivers.remove(eventReceiver);
     }
+
+    // </editor-fold>
 
     public KitchenTaskSummary getCurrentKitchenTaskSummary() {
         return currentKitchenTaskSummary;

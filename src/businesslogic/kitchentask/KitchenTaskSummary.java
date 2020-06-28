@@ -1,7 +1,5 @@
 package businesslogic.kitchentask;
 
-import businesslogic.menu.MenuItem;
-import businesslogic.menu.Section;
 import businesslogic.recipe.KitchenItem;
 import businesslogic.turn.Turn;
 import businesslogic.user.User;
@@ -16,6 +14,7 @@ import java.util.Comparator;
 
 public class KitchenTaskSummary {
 
+    private int id;
     private final ArrayList<KitchenTask> kitchenTasks;
 
     public KitchenTaskSummary() {
@@ -57,7 +56,18 @@ public class KitchenTaskSummary {
         return "Foglio: " + kitchenTasks.size() + " compiti";
     }
 
-    public static void saveKitchenTaskSummary(KitchenTaskSummary kitchenTaskSummary) {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    // STATIC METHODS FOR PERSISTENCE
+
+    public static void saveNewKitchenTaskSummary(int service_id, KitchenTaskSummary kitchenTaskSummary) {
         String summaryInsert = "INSERT INTO catering.KitchenTaskSummary (.....) VALUES (?, ?, ?);";
         int[] result = PersistenceManager.executeBatchUpdate(summaryInsert, 1, new BatchUpdateHandler() {
             @Override
@@ -74,6 +84,4 @@ public class KitchenTaskSummary {
             }
         });
     }
-
-
 }

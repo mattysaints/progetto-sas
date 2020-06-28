@@ -45,6 +45,14 @@ public class ServiceInfo implements EventItemInfo {
         this.kitchenTaskSummary = kitchenTaskSummary;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    void setId(int id) {
+        this.id = id;
+    }
+
     // STATIC METHODS FOR PERSISTENCE
 
     public static ObservableList<ServiceInfo> loadServiceInfoForEvent(int event_id) {
