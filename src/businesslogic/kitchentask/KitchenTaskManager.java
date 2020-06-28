@@ -37,7 +37,7 @@ public class KitchenTaskManager {
         KitchenTaskSummary summary = service.createKitchenTaskSummary();
         this.setCurrentKitchenTaskSummary(summary);
 
-        this.notifyKitchenTaskSummeryCreated(summary);
+        this.notifyKitchenTaskSummaryCreated(summary);
         return summary;
     }
 
@@ -87,10 +87,6 @@ public class KitchenTaskManager {
             er.updateKitchenTaskAdded(kitchenTaskSummary, kitchenTask);
     }
 
-    private void notifyKitchenTaskSummeryCreated(KitchenTaskSummary summary) {
-        for (KitchenTaskEventReceiver er : eventReceivers)
-            er.updateKitchenTaskAdded(summary);
-    }
 
     private void notifyKitchenTaskRemoved(KitchenTaskSummary currentKitchenTaskSummary, KitchenTask kitchenTask) {
         for (KitchenTaskEventReceiver er : eventReceivers)
@@ -100,6 +96,11 @@ public class KitchenTaskManager {
     private void notifyKitchenTaskAssigned(KitchenTask kitchenTask) {
         for (KitchenTaskEventReceiver er : eventReceivers)
             er.updateKitchenTaskAssigned(kitchenTask);
+    }
+
+    private void notifyKitchenTaskSummaryCreated(KitchenTaskSummary kitchenTaskSummary) {
+        for (KitchenTaskEventReceiver er : eventReceivers)
+            er.updateKitchenTaskSummaryCreated(kitchenTaskSummary);
     }
 
     public void addEventReceiver(KitchenTaskEventReceiver eventReceiver) {

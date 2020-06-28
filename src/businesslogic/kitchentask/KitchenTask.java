@@ -79,4 +79,17 @@ public class KitchenTask {
     public void setProductQuantity(String productQuantity) {
         this.productQuantity = productQuantity;
     }
+
+    @Override
+    public String toString() {
+        return "KitchenTask{" +
+                "turn=" + turn +
+                ", cook=" + cook +
+                ", preparationTime=" + preparationTime +
+                ", productQuantity='" + productQuantity + '\'' +
+                ", toPrepare=" + toPrepare +
+                ", completed=" + completed +
+                ", kitchenItem=" + kitchenItem +
+                '}';
+    }
 }

@@ -8,4 +8,7 @@ public interface KitchenTaskEventReceiver {
     void updateKitchenTaskRemoved(KitchenTaskSummary currentKitchenTaskSummary, KitchenTask kitchenTask);
 
     void updateKitchenTaskAssigned(KitchenTask kitchenTask);
+
+    void updateKitchenTaskSummaryCreated(KitchenTaskSummary kitchenTaskSummary);
+
 }

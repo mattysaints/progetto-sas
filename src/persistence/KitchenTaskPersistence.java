@@ -18,11 +18,18 @@ public class KitchenTaskPersistence implements KitchenTaskEventReceiver {
 
     @Override
     public void updateKitchenTaskRemoved(KitchenTaskSummary currentKitchenTaskSummary, KitchenTask kitchenTask) {
-
     }
 
     @Override
     public void updateKitchenTaskAssigned(KitchenTask kitchenTask) {
+    }
+
+    @Override
+    public void updateKitchenTaskSummaryCreated(KitchenTaskSummary kitchenTaskSummary) {
 
     }
+
+
+
+
 }

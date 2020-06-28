@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="329.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ChoiceBox fx:id="selectTurn" layoutX="197.0" layoutY="81.0" prefWidth="150.0" />
+      <Label layoutX="117.0" layoutY="85.0" text="Scegli turno : ">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="106.0" layoutY="119.0" prefHeight="17.0" prefWidth="86.0" text="Scegli cuoco : ">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <ChoiceBox fx:id="selectCook" layoutX="198.0" layoutY="115.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="hours" layoutX="198.0" layoutY="152.0" prefHeight="25.0" prefWidth="149.0" promptText="Minuti" />
+      <Label layoutX="100.0" layoutY="155.0" text="Tempo stimato :">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="134.0" layoutY="191.0" text="Quantità :">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <TextField fx:id="quantity" layoutX="198.0" layoutY="187.0" />
+      <Button layoutX="286.0" layoutY="242.0" mnemonicParsing="false" text="Assegna" />
+   </children>
+</AnchorPane>

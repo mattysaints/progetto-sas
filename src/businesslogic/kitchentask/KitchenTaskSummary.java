@@ -1,13 +1,21 @@
 package businesslogic.kitchentask;
 
+import businesslogic.menu.MenuItem;
+import businesslogic.menu.Section;
 import businesslogic.recipe.KitchenItem;
 import businesslogic.turn.Turn;
 import businesslogic.user.User;
+import persistence.BatchUpdateHandler;
+import persistence.PersistenceManager;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class KitchenTaskSummary {
+
     private final ArrayList<KitchenTask> kitchenTasks;
 
     public KitchenTaskSummary() {
@@ -40,8 +48,32 @@ public class KitchenTaskSummary {
         kitchenTask.setProductQuantity(quantity);
     }
 
+    public ArrayList<KitchenTask> getKitchenTasks() {
+        return kitchenTasks;
+    }
+
     @Override
     public String toString() {
         return "Foglio: " + kitchenTasks.size() + " compiti";
     }
+
+    public static void saveKitchenTaskSummary(KitchenTaskSummary kitchenTaskSummary) {
+        String summaryInsert = "INSERT INTO catering.KitchenTaskSummary (.....) VALUES (?, ?, ?);";
+        int[] result = PersistenceManager.executeBatchUpdate(summaryInsert, 1, new BatchUpdateHandler() {
+            @Override
+            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
+                //Setta parametri query
+            }
+
+            @Override
+            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
+                // ottenere id summary
+                if (count == 0) {
+                    //assegnare id se necessario
+                }
+            }
+        });
+    }
+
+
 }
