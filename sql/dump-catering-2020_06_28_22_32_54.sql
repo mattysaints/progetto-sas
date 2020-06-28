@@ -496,6 +496,42 @@ VALUES (1, 'o'),
 UNLOCK TABLES;
 
 --
+-- Table structure for table `UserTurns`
+--
+
+DROP TABLE IF EXISTS `UserTurns`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `UserTurns`
+(
+    `user_id` int(11) NOT NULL,
+    `turn_id` int(11) NOT NULL,
+    PRIMARY KEY (`user_id`, `turn_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `UserTurns`
+--
+
+LOCK TABLES `UserTurns` WRITE;
+/*!40000 ALTER TABLE `UserTurns`
+    DISABLE KEYS */;
+INSERT INTO `UserTurns`
+VALUES (5, 1),
+       (5, 2),
+       (5, 3),
+       (6, 4),
+       (6, 5),
+       (6, 6),
+       (6, 7),
+       (6, 8);
+/*!40000 ALTER TABLE `UserTurns`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Users`
 --
 
@@ -543,4 +579,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-28 21:17:30
+-- Dump completed on 2020-06-28 22:32:54
