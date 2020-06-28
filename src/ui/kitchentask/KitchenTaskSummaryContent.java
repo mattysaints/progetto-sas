@@ -1,10 +1,18 @@
 package ui.kitchentask;
 
+import businesslogic.CatERing;
 import javafx.fxml.FXML;
 
 public class KitchenTaskSummaryContent {
+    private KitchenTaskManagement kitchenTaskManagement;
+
+    public void initialize() {
+
+    }
+
     @FXML
     private void exitButtonPressed() {
+        kitchenTaskManagement.showEventList(CatERing.getInstance().getKitchenTaskManager().getCurrentKitchenTaskSummary());
     }
 
     @FXML
@@ -25,5 +33,13 @@ public class KitchenTaskSummaryContent {
 
     @FXML
     private void ordinaTempiPressed() {
+    }
+
+    @FXML
+    private void modificaItemPressed() {
+    }
+
+    public void setMenuManagementController(KitchenTaskManagement kitchenTaskManagement) {
+        this.kitchenTaskManagement = kitchenTaskManagement;
     }
 }

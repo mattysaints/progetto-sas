@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<BorderPane maxHeight="-Infinity" fx:controller="ui.kitchentask.KitchenTaskManagement" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <Label prefHeight="49.0" prefWidth="606.0" text="Elenco eventi">
-          <font>
-              <Font size="15.0" />
-          </font>
-          <BorderPane.margin>
-              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-          </BorderPane.margin>
-      </Label>
-   </top>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<BorderPane fx:id="containerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.kitchentask.KitchenTaskManagement">
+    <top>
+        <Label fx:id="userLabel" prefHeight="20.0" prefWidth="606.0" text="User">
+            <font>
+                <Font size="15.0"/>
+            </font>
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </BorderPane.margin>
+        </Label>
+    </top>
    <center>
        <fx:include fx:id="eventListPane" source="event-list.fxml"/>
    </center>

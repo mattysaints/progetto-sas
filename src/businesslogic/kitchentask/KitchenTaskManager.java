@@ -109,4 +109,8 @@ public class KitchenTaskManager {
     public void removeEventReceiver(KitchenTaskEventReceiver eventReceiver) {
         eventReceivers.remove(eventReceiver);
     }
+
+    public KitchenTaskSummary getCurrentKitchenTaskSummary() {
+        return currentKitchenTaskSummary;
+    }
 }

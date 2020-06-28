@@ -5,6 +5,7 @@ import businesslogic.UseCaseLogicException;
 import businesslogic.event.EventInfo;
 import businesslogic.event.EventItemInfo;
 import businesslogic.event.ServiceInfo;
+import businesslogic.kitchentask.KitchenTaskSummary;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -64,6 +65,9 @@ public class EventList {
 
 
         eventList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
+            if (newV == null)
+                return; // todo eventualmente togliere
+
             apriButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
                     || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() == null);
 
@@ -77,5 +81,10 @@ public class EventList {
     @FXML
     private void fineButtonPressed() {
         kitchenTaskManagementController.endKitchenTaskManagement();
+    }
+
+    public void selectKitchenTaskSummary(KitchenTaskSummary kitchenTaskSummary) {
+        eventList.refresh();
+        // todo seleziona elemento
     }
 }
