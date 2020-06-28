@@ -79,6 +79,34 @@ VALUES (1, 'Convegno Agile Community', '2020-09-25', '2020-09-25', 100, 2),
 UNLOCK TABLES;
 
 --
+-- Table structure for table `KitchenTaskSummaries`
+--
+
+DROP TABLE IF EXISTS `KitchenTaskSummaries`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `KitchenTaskSummaries`
+(
+    `id`         int(11) NOT NULL,
+    `service_id` int(11) DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `KitchenTaskSummaries_service_id_uindex` (`service_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `KitchenTaskSummaries`
+--
+
+LOCK TABLES `KitchenTaskSummaries` WRITE;
+/*!40000 ALTER TABLE `KitchenTaskSummaries`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `KitchenTaskSummaries`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `KitchenTasks`
 --
 
@@ -87,14 +115,14 @@ DROP TABLE IF EXISTS `KitchenTasks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `KitchenTasks`
 (
-    `id`               int(11)    NOT NULL,
-    `preparation_time` int(11)    NOT NULL,
-    `product_quantity` int(11)    NOT NULL,
-    `to_prepare`       tinyint(1) NOT NULL,
-    `completed`        tinyint(1) NOT NULL,
-    `service_id`       int(11)    NOT NULL,
-    `turn_id`          int(11)    NOT NULL,
-    `recipe_id`        int(11)    NOT NULL,
+    `id`                      int(11)    NOT NULL,
+    `preparation_time`        int(11)    NOT NULL,
+    `product_quantity`        int(11)    NOT NULL,
+    `to_prepare`              tinyint(1) NOT NULL,
+    `completed`               tinyint(1) NOT NULL,
+    `kitchen_task_summary_id` int(11)    NOT NULL,
+    `turn_id`                 int(11)    NOT NULL,
+    `recipe_id`               int(11)    NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
@@ -579,4 +607,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-28 22:32:54
+-- Dump completed on 2020-06-28 23:17:08
