@@ -63,14 +63,11 @@ public class EventList {
             }
         }
 
-
         eventList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
             if (newV == null)
-                return; // todo eventualmente togliere
-
+                return;
             apriButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
                     || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() == null);
-
             creaButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
                     || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() != null);
         });
@@ -84,7 +81,25 @@ public class EventList {
     }
 
     public void selectKitchenTaskSummary(KitchenTaskSummary kitchenTaskSummary) {
-        eventList.refresh();
-        // todo seleziona elemento
+        selectTreeItem(kitchenTaskSummary, eventList.getRoot());
+    }
+
+    private boolean selectTreeItem(KitchenTaskSummary kitchenTaskSummary, TreeItem<EventItemInfo> root) {
+        // TODO non funziona ancora, perchè arrivati a questo punto non ha ancora salvato le informazioni nel DB
+        if (root.getValue() instanceof ServiceInfo
+                && kitchenTaskSummary.equals(((ServiceInfo) root.getValue()).getKitchenTaskSummary())) {
+            eventList.getSelectionModel().select(root);
+            root.setExpanded(true);
+            return true;
+        } else if (root.isLeaf())
+            return false;
+        else {
+            for (TreeItem<EventItemInfo> e : root.getChildren()) {
+                boolean selectParent = selectTreeItem(kitchenTaskSummary, e);
+                e.setExpanded(selectParent);
+                return selectParent;
+            }
+            return false;
+        }
     }
 }
