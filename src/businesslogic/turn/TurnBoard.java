@@ -6,11 +6,13 @@ import persistence.ResultHandler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TurnBoard {
     private static TurnBoard instance;
 
-    private ArrayList<Turn> turns;
+    private Map<Integer, Turn> turns;
 
     private TurnBoard() {
     }
@@ -18,17 +20,17 @@ public class TurnBoard {
     public static TurnBoard getInstance() {
         if (instance == null)
             instance = new TurnBoard();
+        if (instance.turns == null)
+            instance.loadTurns();
         return instance;
     }
 
     public ArrayList<Turn> getTurns() {
-        if (turns == null)
-            loadTurns();
-        return new ArrayList<>(turns);
+        return new ArrayList<>(turns.values());
     }
 
     private void loadTurns() {
-        turns = new ArrayList<>();
+        turns = new HashMap<>();
         String turnQuery = "SELECT * FROM Turns";
         PersistenceManager.executeQuery(turnQuery, new ResultHandler() {
             @Override
@@ -37,8 +39,12 @@ public class TurnBoard {
                 turn.setId(rs.getInt(1));
                 turn.setTimeStart(rs.getTime(2));
                 turn.setTimeEnd(rs.getTime(3));
-                turns.add(turn);
+                turns.put(turn.getId(), turn);
             }
         });
+    }
+
+    public Turn getTurnById(int turn_id) {
+        return turns.get(turn_id);
     }
 }

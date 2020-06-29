@@ -41,11 +41,13 @@ public class KitchenTaskSummary {
         kitchenTasks.remove(kitchenTask);
     }
 
-    public void assignKitchenTask(KitchenTask kitchenTask, Turn turn, User cook, int time, String quantity) {
+    public void assignKitchenTask(KitchenTask kitchenTask, Turn turn, User cook, int time, String quantity, boolean toPrepare, boolean isCompleted) {
         kitchenTask.setTurn(turn);
         kitchenTask.setCook(cook);
         kitchenTask.setPreparationTime(time);
         kitchenTask.setProductQuantity(quantity);
+        kitchenTask.setToPrepare(toPrepare);
+        kitchenTask.setIsCompleted(isCompleted);
     }
 
     public ArrayList<KitchenTask> getKitchenTasks() {

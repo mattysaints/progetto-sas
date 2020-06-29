@@ -70,15 +70,16 @@ public class KitchenTaskManager {
         return currentKitchenTaskSummary;
     }
 
-    public void assignKitchenTask(KitchenTask kitchenTask, Turn turn, User cook, int time, String quantity) throws UseCaseLogicException, TurnException, StaffException {
+    public void assignKitchenTask(KitchenTask kitchenTask, Turn turn, User cook, int time, String quantity, boolean toPrepare, boolean isCompleted)
+            throws UseCaseLogicException, TurnException, StaffException {
         if (currentKitchenTaskSummary == null)
             throw new UseCaseLogicException();
-        if (turn.isFull())
+        if (turn != null && turn.isFull())
             throw new TurnException();
-        if (!cook.isAvailable(turn))
+        if (cook != null && !cook.isAvailable(turn))
             throw new StaffException();
 
-        currentKitchenTaskSummary.assignKitchenTask(kitchenTask, turn, cook, time, quantity);
+        currentKitchenTaskSummary.assignKitchenTask(kitchenTask, turn, cook, time, quantity, toPrepare, isCompleted);
         this.notifyKitchenTaskAssigned(kitchenTask);
     }
 

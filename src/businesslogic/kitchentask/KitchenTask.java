@@ -2,6 +2,7 @@ package businesslogic.kitchentask;
 
 import businesslogic.recipe.KitchenItem;
 import businesslogic.turn.Turn;
+import businesslogic.turn.TurnBoard;
 import businesslogic.user.User;
 import persistence.BatchUpdateHandler;
 import persistence.PersistenceManager;
@@ -12,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class KitchenTask {
     // Some default KitchenTask comparators
@@ -128,14 +131,18 @@ public class KitchenTask {
         String deleteCookQuery = "DELETE FROM KitchenTaskCookAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
         PersistenceManager.executeUpdate(deleteCookQuery);
 
-        String addCookQuery = "INSERT INTO KitchenTaskCookAssignment (kitchen_task_id, user_id) value ('" + kitchenTask.getId() + "','" + kitchenTask.getCook().getId() + "')";
-        PersistenceManager.executeUpdate(addCookQuery);
+        if (kitchenTask.getCook() != null) {
+            String addCookQuery = "INSERT INTO KitchenTaskCookAssignment (kitchen_task_id, user_id) value ('" + kitchenTask.getId() + "','" + kitchenTask.getCook().getId() + "')";
+            PersistenceManager.executeUpdate(addCookQuery);
+        }
 
-        String deleteTurnQuery = "DELETE FROM KitchenTaskCookAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
+        String deleteTurnQuery = "DELETE FROM KitchenTaskTurnAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
         PersistenceManager.executeUpdate(deleteTurnQuery);
 
-        String addTurnQuery = "INSERT INTO KitchenTaskCookAssignment (kitchen_task_id, turn_id) value ('" + kitchenTask.getId() + "','" + kitchenTask.getTurn().getId() + "')";
-        PersistenceManager.executeUpdate(addTurnQuery);
+        if (kitchenTask.getTurn() != null) {
+            String addTurnQuery = "INSERT INTO KitchenTaskTurnAssignment (kitchen_task_id, turn_id) value ('" + kitchenTask.getId() + "','" + kitchenTask.getTurn().getId() + "')";
+            PersistenceManager.executeUpdate(addTurnQuery);
+        }
     }
 
     public static void removeKitchenTask(KitchenTask kitchenTask) {
@@ -170,7 +177,7 @@ public class KitchenTask {
 
 
     public static ArrayList<KitchenTask> loadKitchenTasksFromSummary(int summary_id) {
-        ArrayList<KitchenTask> result = new ArrayList<>();
+        Map<Integer, KitchenTask> result = new HashMap<>();
         String kitchenTasksQuery = "SELECT * FROM KitchenTasks WHERE kitchen_task_summary_id = '" + summary_id + "'";
         PersistenceManager.executeQuery(kitchenTasksQuery, new ResultHandler() {
             @Override
@@ -182,10 +189,40 @@ public class KitchenTask {
                 kt.productQuantity = rs.getString(3);
                 kt.toPrepare = rs.getBoolean(4);
                 kt.isCompleted = rs.getBoolean(5);
-                result.add(kt);
+                result.put(kt.id, kt);
             }
         });
-        return result;
+
+        String turnAssignmentQuery = "SELECT * FROM KitchenTaskTurnAssignment";
+        PersistenceManager.executeQuery(turnAssignmentQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                int kitchenTask_id = rs.getInt(1);
+                int turn_id = rs.getInt(2);
+                if (result.containsKey(kitchenTask_id))
+                    result.get(kitchenTask_id).setTurn(TurnBoard.getInstance().getTurnById(turn_id));
+            }
+        });
+
+        String cookAssignmentQuery = "SELECT * FROM KitchenTaskCookAssignment";
+        PersistenceManager.executeQuery(cookAssignmentQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                int kitchenTask_id = rs.getInt(1);
+                int user_id = rs.getInt(2);
+                if (result.containsKey(kitchenTask_id))
+                    result.get(kitchenTask_id).setCook(User.loadUserById(user_id));
+            }
+        });
+
+        return new ArrayList<>(result.values());
     }
 
+    public void setToPrepare(boolean toPrepare) {
+        this.toPrepare = toPrepare;
+    }
+
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
 }
