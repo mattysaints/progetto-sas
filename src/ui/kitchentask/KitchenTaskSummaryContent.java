@@ -13,16 +13,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 
 import java.util.Optional;
 
 public class KitchenTaskSummaryContent {
     @FXML
-    public ListView<KitchenTask> kitchenTaskList;
+    private ListView<KitchenTask> kitchenTaskList;
     @FXML
-    public Button deleteSectionButton;
+    private Button deleteKitchenTaskButton;
     @FXML
-    public ListView<String> itemsList;
+    private BorderPane assignKitchenTaskPane;
 
     private KitchenTaskManagement kitchenTaskManagement;
 
@@ -36,11 +37,13 @@ public class KitchenTaskSummaryContent {
             kitchenTaskList.setItems(kitchenTasks);
         }
         kitchenTaskList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
-            if (newV == null)
+            if (newV == null) {
+                assignKitchenTaskPane.setVisible(false);
                 return;
+            }
 
-            deleteSectionButton.setDisable(false);
-            itemsList.getItems().setAll(newV.toString());
+            assignKitchenTaskPane.setVisible(true);
+            deleteKitchenTaskButton.setDisable(false);
         });
     }
 
@@ -88,12 +91,9 @@ public class KitchenTaskSummaryContent {
     }
 
     @FXML
-    private void modificaItemPressed() throws UseCaseLogicException{
-        KitchenTaskManager kitchenTaskManager = CatERing.getInstance().getKitchenTaskManager();
+    private void assegnaButtonPressed() {
         KitchenTask kitchenTask = kitchenTaskList.getSelectionModel().getSelectedItem();
-        //kitchenTaskManager.assignKitchenTask(kitchenTask, , , , ,);
-        kitchenTaskList.refresh();
-        itemsList.refresh();
+
     }
 
     public void setMenuManagementController(KitchenTaskManagement kitchenTaskManagement) {
