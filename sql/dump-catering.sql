@@ -52,6 +52,33 @@ VALUES (1, 'Convegno Agile Community', '2020-09-25', '2020-09-25', 100, 2),
 UNLOCK TABLES;
 
 --
+-- Table structure for table `KitchenTaskCookAssignment`
+--
+
+DROP TABLE IF EXISTS `KitchenTaskCookAssignment`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `KitchenTaskCookAssignment`
+(
+    `kitchen_task_id` int(11) NOT NULL,
+    `user_id`         int(11) NOT NULL,
+    PRIMARY KEY (`kitchen_task_id`, `user_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `KitchenTaskCookAssignment`
+--
+
+LOCK TABLES `KitchenTaskCookAssignment` WRITE;
+/*!40000 ALTER TABLE `KitchenTaskCookAssignment`
+    DISABLE KEYS */;
+/*!40000 ALTER TABLE `KitchenTaskCookAssignment`
+    ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `KitchenTaskSummaries`
 --
 
@@ -106,6 +133,10 @@ CREATE TABLE `KitchenTaskTurnAssignment`
 LOCK TABLES `KitchenTaskTurnAssignment` WRITE;
 /*!40000 ALTER TABLE `KitchenTaskTurnAssignment`
     DISABLE KEYS */;
+INSERT INTO `KitchenTaskTurnAssignment`
+VALUES (1, 1),
+       (2, 1),
+       (7, 1);
 /*!40000 ALTER TABLE `KitchenTaskTurnAssignment`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -128,7 +159,7 @@ CREATE TABLE `KitchenTasks`
     `recipe_id`               int(11)    NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 7
+  AUTO_INCREMENT = 8
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -140,36 +171,10 @@ LOCK TABLES `KitchenTasks` WRITE;
 /*!40000 ALTER TABLE `KitchenTasks`
     DISABLE KEYS */;
 INSERT INTO `KitchenTasks`
-VALUES (1, 8, '200 cornetti', 1, 0, 1, 9),
-       (2, NULL, NULL, 1, 0, 3, 2);
+VALUES (1, 1, '', 0, 0, 1, 9),
+       (2, 0, '', 0, 0, 3, 2),
+       (7, 2, '200 porzioni', 1, 0, 1, 4);
 /*!40000 ALTER TABLE `KitchenTasks`
-    ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `KitchentTaskCookAssignment`
---
-
-DROP TABLE IF EXISTS `KitchentTaskCookAssignment`;
-/*!40101 SET @saved_cs_client = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `KitchentTaskCookAssignment`
-(
-    `kitchen_task_id` int(11) NOT NULL,
-    `user_id`         int(11) NOT NULL,
-    PRIMARY KEY (`kitchen_task_id`, `user_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `KitchentTaskCookAssignment`
---
-
-LOCK TABLES `KitchentTaskCookAssignment` WRITE;
-/*!40000 ALTER TABLE `KitchentTaskCookAssignment`
-    DISABLE KEYS */;
-/*!40000 ALTER TABLE `KitchentTaskCookAssignment`
     ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -631,4 +636,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-29 13:27:04
+-- Dump completed on 2020-06-29 19:27:34
