@@ -18,7 +18,7 @@ public class KitchenTaskPersistence implements KitchenTaskEventReceiver {
 
     @Override
     public void updateKitchenTaskRemoved(KitchenTaskSummary kitchenTaskSummary, KitchenTask kitchenTask) {
-        KitchenTask.removeKitchenTask(kitchenTaskSummary.getId(), kitchenTask);
+        KitchenTask.removeKitchenTask(kitchenTask);
     }
 
     @Override

@@ -7,6 +7,7 @@ import businesslogic.kitchentask.KitchenTaskManager;
 import businesslogic.kitchentask.KitchenTaskSummary;
 import businesslogic.recipe.KitchenItem;
 import businesslogic.recipe.Recipe;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -25,10 +26,15 @@ public class KitchenTaskSummaryContent {
 
     private KitchenTaskManagement kitchenTaskManagement;
 
-    public void initialize() {
+    private ObservableList<KitchenTask> kitchenTasks;
 
+    public void initialize() {
         KitchenTaskSummary summary = CatERing.getInstance().getKitchenTaskManager().getCurrentKitchenTaskSummary();
-        if(summary!=null) {kitchenTaskList.getItems().addAll(summary.getKitchenTasks());}
+        kitchenTasks = FXCollections.observableArrayList();
+        if (summary != null) {
+            kitchenTasks.addAll(summary.getKitchenTasks());
+            kitchenTaskList.setItems(kitchenTasks);
+        }
         kitchenTaskList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
             if (newV == null)
                 return;
@@ -54,17 +60,17 @@ public class KitchenTaskSummaryContent {
         dialog.setHeaderText("Scegli compito da aggiungere");
 
         Optional<KitchenItem> result = dialog.showAndWait();
-        if (result.isPresent())
-            CatERing.getInstance().getKitchenTaskManager().addKitchenTask(result.get());
-        kitchenTaskList.refresh();
+        if (result.isPresent()) {
+            KitchenTask kitchenTask = CatERing.getInstance().getKitchenTaskManager().addKitchenTask(result.get());
+            kitchenTasks.add(kitchenTask);
+        }
     }
 
     @FXML
     private void deleteKitchenTaskPressed() throws UseCaseLogicException {
-        KitchenTaskManager kitchenTaskManager= CatERing.getInstance().getKitchenTaskManager();
-        kitchenTaskManager.removeKitchenTask(kitchenTaskList.getSelectionModel().getSelectedItem());
-        kitchenTaskList.refresh();
-        //kitchenTaskList.getItems().remove(kitchenTaskList.getSelectionModel().getSelectedItem());
+        KitchenTask kitchenTask = kitchenTaskList.getSelectionModel().getSelectedItem();
+        CatERing.getInstance().getKitchenTaskManager().removeKitchenTask(kitchenTask);
+        kitchenTasks.remove(kitchenTask);
     }
 
     @FXML

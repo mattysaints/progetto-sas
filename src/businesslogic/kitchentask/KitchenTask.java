@@ -89,17 +89,21 @@ public class KitchenTask {
         this.productQuantity = productQuantity;
     }
 
+    private int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
-        return "KitchenTask{" +
-                "turn=" + turn +
-                ", cook=" + cook +
-                ", preparationTime=" + preparationTime +
-                ", productQuantity='" + productQuantity + '\'' +
-                ", toPrepare=" + toPrepare +
-                ", completed=" + isCompleted +
-                ", kitchenItem=" + kitchenItem +
-                '}';
+        String result = kitchenItem.toString() + " (";
+        if (!toPrepare)
+            result += "non ";
+        result += "da prerarare, ";
+
+        if (!isCompleted)
+            result += "non ";
+        result += "completato)";
+        return result;
     }
 
     // STATIC METHODS FOR PERSISTENCE
@@ -108,8 +112,15 @@ public class KitchenTask {
         // TODO
     }
 
-    public static void removeKitchenTask(int kitchenTaskSummary_id, KitchenTask kitchenTask) {
-        // TODO
+    public static void removeKitchenTask(KitchenTask kitchenTask) {
+        String delTurns = "DELETE FROM KitchenTasksTurnAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
+        PersistenceManager.executeUpdate(delTurns);
+
+        String delCooks = "DELETE FROM KitchenTasksCookAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
+        PersistenceManager.executeUpdate(delCooks);
+
+        String removeKitchenTask = "DELETE FROM KitchenTasks WHERE id='" + kitchenTask.getId() + "'";
+        PersistenceManager.executeUpdate(removeKitchenTask);
     }
 
     public static void saveNewKitchenTask(int kitchenTaskSummary_id, KitchenTask kitchenTask) {
