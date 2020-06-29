@@ -68,18 +68,18 @@ public class KitchenTaskSummary {
     // STATIC METHODS FOR PERSISTENCE
 
     public static void saveNewKitchenTaskSummary(int service_id, KitchenTaskSummary kitchenTaskSummary) {
-        String summaryInsert = "INSERT INTO catering.KitchenTaskSummary (.....) VALUES (?, ?, ?);";
-        int[] result = PersistenceManager.executeBatchUpdate(summaryInsert, 1, new BatchUpdateHandler() {
+        String summaryInsert = "INSERT INTO KitchenTaskSummaries (service_id) VALUES (?);";
+        PersistenceManager.executeBatchUpdate(summaryInsert, 1, new BatchUpdateHandler() {
             @Override
             public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
-                //Setta parametri query
+                ps.setInt(1, service_id);
             }
 
             @Override
             public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
-                // ottenere id summary
+                // solo uno
                 if (count == 0) {
-                    //assegnare id se necessario
+                    kitchenTaskSummary.id = rs.getInt("id");
                 }
             }
         });

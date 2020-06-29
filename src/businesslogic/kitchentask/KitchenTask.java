@@ -3,7 +3,12 @@ package businesslogic.kitchentask;
 import businesslogic.recipe.KitchenItem;
 import businesslogic.turn.Turn;
 import businesslogic.user.User;
+import persistence.BatchUpdateHandler;
+import persistence.PersistenceManager;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Comparator;
 
 public class KitchenTask {
@@ -27,6 +32,7 @@ public class KitchenTask {
     private boolean toPrepare;
     private boolean completed;
     private KitchenItem kitchenItem;
+    private int id;
 
 
     public KitchenTask(KitchenItem kitchenItem) {
@@ -105,6 +111,21 @@ public class KitchenTask {
     }
 
     public static void saveNewKitchenTask(int kitchenTaskSummary_id, KitchenTask kitchenTask) {
-        // TODO
+        String newKitchenTaskQuery = "INSERT INTO KitchenTasks (kitchen_task_summary_id, recipe_id) VALUES (?,?)";
+        PersistenceManager.executeBatchUpdate(newKitchenTaskQuery, 1, new BatchUpdateHandler() {
+            @Override
+            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
+                ps.setInt(1, kitchenTaskSummary_id);
+                ps.setInt(2, kitchenTask.getKitchenItem().getId());
+            }
+
+            @Override
+            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
+                // should be only one
+                if (count == 0) {
+                    kitchenTask.id = rs.getInt("id");
+                }
+            }
+        });
     }
 }

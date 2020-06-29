@@ -3,6 +3,7 @@ package businesslogic.recipe;
 public class KitchenPreparation implements KitchenItem{
 
     private String name;
+    private int id;
 
     @Override
     public int getDifficulty() {
@@ -12,6 +13,11 @@ public class KitchenPreparation implements KitchenItem{
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override
