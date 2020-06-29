@@ -5,10 +5,12 @@ import businesslogic.turn.Turn;
 import businesslogic.user.User;
 import persistence.BatchUpdateHandler;
 import persistence.PersistenceManager;
+import persistence.ResultHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class KitchenTask {
@@ -30,7 +32,7 @@ public class KitchenTask {
     private int preparationTime;
     private String productQuantity;
     private boolean toPrepare;
-    private boolean completed;
+    private boolean isCompleted;
     private KitchenItem kitchenItem;
     private int id;
 
@@ -56,7 +58,7 @@ public class KitchenTask {
     }
 
     public boolean isCompleted() {
-        return completed;
+        return isCompleted;
     }
 
     public Turn getTurn() {
@@ -95,7 +97,7 @@ public class KitchenTask {
                 ", preparationTime=" + preparationTime +
                 ", productQuantity='" + productQuantity + '\'' +
                 ", toPrepare=" + toPrepare +
-                ", completed=" + completed +
+                ", completed=" + isCompleted +
                 ", kitchenItem=" + kitchenItem +
                 '}';
     }
@@ -123,9 +125,30 @@ public class KitchenTask {
             public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
                 // should be only one
                 if (count == 0) {
-                    kitchenTask.id = rs.getInt("id");
+                    kitchenTask.id = rs.getInt(1);
                 }
             }
         });
     }
+
+
+    public static ArrayList<KitchenTask> loadKitchenTasksFromSummary(int summary_id) {
+        ArrayList<KitchenTask> result = new ArrayList<>();
+        String kitchenTasksQuery = "SELECT * FROM KitchenTasks WHERE kitchen_task_summary_id = '" + summary_id + "'";
+        PersistenceManager.executeQuery(kitchenTasksQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                KitchenItem item = KitchenItem.loadKitchenItem(rs.getInt(7));
+                KitchenTask kt = new KitchenTask(item);
+                kt.id = rs.getInt(1);
+                kt.preparationTime = rs.getInt(2);
+                kt.productQuantity = rs.getString(3);
+                kt.toPrepare = rs.getBoolean(4);
+                kt.isCompleted = rs.getBoolean(5);
+                result.add(kt);
+            }
+        });
+        return result;
+    }
+
 }

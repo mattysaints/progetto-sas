@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Recipe implements KitchenItem{
+public class Recipe implements KitchenItem {
     private static final Map<Integer, Recipe> all = new HashMap<>();
 
     private int difficulty;
@@ -30,6 +30,11 @@ public class Recipe implements KitchenItem{
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -91,5 +96,10 @@ public class Recipe implements KitchenItem{
     @Override
     public int getDifficulty() {
         return difficulty;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 }

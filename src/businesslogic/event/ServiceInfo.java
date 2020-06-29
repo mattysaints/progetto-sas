@@ -69,6 +69,7 @@ public class ServiceInfo implements EventItemInfo {
                 serv.timeStart = rs.getTime("time_start");
                 serv.timeEnd = rs.getTime("time_end");
                 serv.participants = rs.getInt("expected_participants");
+                serv.kitchenTaskSummary = KitchenTaskSummary.loadKitchenTaskSummaryForService(serv.id);
                 result.add(serv);
             }
         });

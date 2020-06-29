@@ -5,6 +5,7 @@ import businesslogic.turn.Turn;
 import businesslogic.user.User;
 import persistence.BatchUpdateHandler;
 import persistence.PersistenceManager;
+import persistence.ResultHandler;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import java.util.Comparator;
 public class KitchenTaskSummary {
 
     private int id;
-    private final ArrayList<KitchenTask> kitchenTasks;
+    private ArrayList<KitchenTask> kitchenTasks;
 
     public KitchenTaskSummary() {
         this.kitchenTasks = new ArrayList<>();
@@ -79,9 +80,26 @@ public class KitchenTaskSummary {
             public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
                 // solo uno
                 if (count == 0) {
-                    kitchenTaskSummary.id = rs.getInt("id");
+                    kitchenTaskSummary.id = rs.getInt(1);
                 }
             }
         });
+    }
+
+    public static KitchenTaskSummary loadKitchenTaskSummaryForService(int service_id) {
+        KitchenTaskSummary result = new KitchenTaskSummary();
+        String kitchenTaskSummaryQuery = "SELECT * FROM KitchenTaskSummaries WHERE service_id='" + service_id + "'";
+        PersistenceManager.executeQuery(kitchenTaskSummaryQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                result.id = rs.getInt(1);
+            }
+        });
+        if (result.getId() == 0)
+            return null;
+
+        result.kitchenTasks = KitchenTask.loadKitchenTasksFromSummary(result.getId());
+
+        return result;
     }
 }
