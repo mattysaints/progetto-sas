@@ -5,7 +5,6 @@ import businesslogic.UseCaseLogicException;
 import businesslogic.event.EventInfo;
 import businesslogic.event.EventItemInfo;
 import businesslogic.event.ServiceInfo;
-import businesslogic.kitchentask.KitchenTaskSummary;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,6 +14,7 @@ import javafx.scene.control.TreeView;
 public class EventList {
 
     private KitchenTaskManagement kitchenTaskManagementController;
+    private TreeItem<EventItemInfo> currentTreeItem;
 
     @FXML
     public TreeView<EventItemInfo> eventList;
@@ -26,8 +26,8 @@ public class EventList {
     @FXML
     private void creaButtonPressed() {
         try {
-            EventItemInfo eventItemInfo = eventList.getSelectionModel().getSelectedItem().getValue();
-            CatERing.getInstance().getKitchenTaskManager().createKitchenTaskSummary((ServiceInfo) eventItemInfo);
+            currentTreeItem = eventList.getSelectionModel().getSelectedItem();
+            CatERing.getInstance().getKitchenTaskManager().createKitchenTaskSummary((ServiceInfo) currentTreeItem.getValue());
             kitchenTaskManagementController.showCurrentKitchenTaskSummary();
         } catch (UseCaseLogicException e) {
             e.printStackTrace();
@@ -37,8 +37,8 @@ public class EventList {
     @FXML
     public void apriButtonPressed() {
         try {
-            EventItemInfo eventItemInfo = eventList.getSelectionModel().getSelectedItem().getValue();
-            CatERing.getInstance().getKitchenTaskManager().selectKitchenTaskSummary((ServiceInfo) eventItemInfo);
+            currentTreeItem = eventList.getSelectionModel().getSelectedItem();
+            CatERing.getInstance().getKitchenTaskManager().selectKitchenTaskSummary((ServiceInfo) currentTreeItem.getValue());
             kitchenTaskManagementController.showCurrentKitchenTaskSummary();
         } catch (UseCaseLogicException ex) {
             ex.printStackTrace();
@@ -78,28 +78,5 @@ public class EventList {
     @FXML
     private void fineButtonPressed() {
         kitchenTaskManagementController.endKitchenTaskManagement();
-    }
-
-    public void selectKitchenTaskSummary(KitchenTaskSummary kitchenTaskSummary) {
-        selectTreeItem(kitchenTaskSummary, eventList.getRoot());
-    }
-
-    private boolean selectTreeItem(KitchenTaskSummary kitchenTaskSummary, TreeItem<EventItemInfo> root) {
-        // TODO non funziona ancora, perchè arrivati a questo punto non ha ancora salvato le informazioni nel DB
-        if (root.getValue() instanceof ServiceInfo
-                && kitchenTaskSummary.equals(((ServiceInfo) root.getValue()).getKitchenTaskSummary())) {
-            eventList.getSelectionModel().select(root);
-            root.setExpanded(true);
-            return true;
-        } else if (root.isLeaf())
-            return false;
-        else {
-            for (TreeItem<EventItemInfo> e : root.getChildren()) {
-                boolean selectParent = selectTreeItem(kitchenTaskSummary, e);
-                e.setExpanded(selectParent);
-                return selectParent;
-            }
-            return false;
-        }
     }
 }

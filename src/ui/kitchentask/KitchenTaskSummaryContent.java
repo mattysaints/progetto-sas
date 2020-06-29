@@ -54,6 +54,7 @@ public class KitchenTaskSummaryContent {
             kitchenTasks.addAll(summary.getKitchenTasks());
             kitchenTaskList.setItems(kitchenTasks);
         }
+
         kitchenTaskList.getSelectionModel().selectedItemProperty().addListener((obs, old, kt) -> {
             if (kt == null) {
                 selectTurn.getSelectionModel().select(null);
@@ -80,7 +81,7 @@ public class KitchenTaskSummaryContent {
 
     @FXML
     private void exitButtonPressed() {
-        kitchenTaskManagement.showEventList(CatERing.getInstance().getKitchenTaskManager().getCurrentKitchenTaskSummary());
+        kitchenTaskManagement.showEventList();
     }
 
     @FXML
@@ -111,14 +112,14 @@ public class KitchenTaskSummaryContent {
     private void ordinaDifficoltaPressed() throws UseCaseLogicException {
         KitchenTaskManager kitchenTaskManager = CatERing.getInstance().getKitchenTaskManager();
         kitchenTaskManager.sortKitchenTasks(KitchenTask.DIFFICULT_FIRST);
-        kitchenTaskList.refresh();
+        kitchenTaskList.getItems().sort(KitchenTask.DIFFICULT_FIRST);
     }
 
     @FXML
     private void ordinaTempiPressed() throws UseCaseLogicException {
         KitchenTaskManager kitchenTaskManager = CatERing.getInstance().getKitchenTaskManager();
         kitchenTaskManager.sortKitchenTasks(KitchenTask.LONG_FIRST);
-        kitchenTaskList.refresh();
+        kitchenTaskList.getItems().sort(KitchenTask.LONG_FIRST);
     }
 
     @FXML

@@ -76,11 +76,14 @@
                <bottom>
                   <FlowPane alignment="CENTER" hgap="5.0" prefHeight="38.0" prefWidth="264.0" vgap="5.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="addKitchenTask" mnemonicParsing="false" onAction="#addKitchenTaskPressed" text="+" />
+                        <Button fx:id="addKitchenTask" mnemonicParsing="false" onAction="#addKitchenTaskPressed"
+                                text="+"/>
                         <Button fx:id="deleteKitchenTaskButton" disable="true" mnemonicParsing="false"
                                 onAction="#deleteKitchenTaskPressed" text="–"/>
-                        <Button disable="true" layoutX="23.0" layoutY="10.0" mnemonicParsing="false" onAction="#ordinaDifficoltaPressed" text="Ordina per difficoltà" />
-                        <Button disable="true" layoutX="252.0" layoutY="16.0" mnemonicParsing="false" onAction="#ordinaTempiPressed" text="Ordina per tempi" />
+                        <Button layoutX="23.0" layoutY="10.0" mnemonicParsing="false"
+                                onAction="#ordinaDifficoltaPressed" text="Ordina per difficoltà"/>
+                        <Button layoutX="252.0" layoutY="16.0" mnemonicParsing="false" onAction="#ordinaTempiPressed"
+                                text="Ordina per tempi"/>
                      </children>
                      <padding>
                         <Insets top="5.0" />
