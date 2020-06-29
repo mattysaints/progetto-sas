@@ -109,7 +109,33 @@ public class KitchenTask {
     // STATIC METHODS FOR PERSISTENCE
 
     public static void updateKitchenTask(KitchenTask kitchenTask) {
-        // TODO
+        String updateKitchenTaskQuery = "UPDATE KitchenTasks SET preparation_time=?, product_quantity=?, to_prepare=?, is_completed=? WHERE id=?";
+        PersistenceManager.executeBatchUpdate(updateKitchenTaskQuery, 1, new BatchUpdateHandler() {
+            @Override
+            public void handleBatchItem(PreparedStatement ps, int batchCount) throws SQLException {
+                ps.setInt(1, kitchenTask.preparationTime);
+                ps.setString(2, kitchenTask.productQuantity);
+                ps.setBoolean(3, kitchenTask.toPrepare);
+                ps.setBoolean(4, kitchenTask.isCompleted);
+                ps.setInt(5, kitchenTask.id);
+            }
+
+            @Override
+            public void handleGeneratedIds(ResultSet rs, int count) throws SQLException {
+            }
+        });
+
+        String deleteCookQuery = "DELETE FROM KitchenTaskCookAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
+        PersistenceManager.executeUpdate(deleteCookQuery);
+
+        String addCookQuery = "INSERT INTO KitchenTaskCookAssignment (kitchen_task_id, user_id) value ('" + kitchenTask.getId() + "','" + kitchenTask.getCook().getId() + "')";
+        PersistenceManager.executeUpdate(addCookQuery);
+
+        String deleteTurnQuery = "DELETE FROM KitchenTaskCookAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
+        PersistenceManager.executeUpdate(deleteTurnQuery);
+
+        String addTurnQuery = "INSERT INTO KitchenTaskCookAssignment (kitchen_task_id, turn_id) value ('" + kitchenTask.getId() + "','" + kitchenTask.getTurn().getId() + "')";
+        PersistenceManager.executeUpdate(addTurnQuery);
     }
 
     public static void removeKitchenTask(KitchenTask kitchenTask) {

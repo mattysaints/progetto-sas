@@ -7,9 +7,8 @@ import persistence.ResultHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class User {
 
@@ -53,6 +52,42 @@ public class User {
             }
         }
         return result;
+    }
+
+    public static List<User> loadCooks() {
+        return loadUsers().stream().filter(User::isCook).collect(Collectors.toList());
+    }
+
+    private boolean isCook() {
+        return roles.contains(Role.CUOCO);
+    }
+
+    public static ArrayList<User> loadUsers() {
+        String usersQuery = "SELECT * FROM Users";
+        PersistenceManager.executeQuery(usersQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                User load = new User();
+                load.id = rs.getInt(1);
+                load.username = rs.getString(2);
+                loadedUsers.put(load.id, load);
+            }
+        });
+        String roleQuery = "SELECT user_id, role_id FROM UserRoles";
+        PersistenceManager.executeQuery(roleQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                String role = rs.getString("role_id");
+                User load = loadedUsers.get(rs.getInt(1));
+                switch (role.charAt(0)) {
+                    case 'c' -> load.roles.add(Role.CUOCO);
+                    case 'h' -> load.roles.add(Role.CHEF);
+                    case 'o' -> load.roles.add(Role.ORGANIZZATORE);
+                    case 's' -> load.roles.add(Role.SERVIZIO);
+                }
+            }
+        });
+        return new ArrayList<>(loadedUsers.values());
     }
 
     // STATIC METHODS FOR PERSISTENCE
