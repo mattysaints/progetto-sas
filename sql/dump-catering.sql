@@ -65,7 +65,7 @@ CREATE TABLE `KitchenTaskSummaries`
     PRIMARY KEY (`id`),
     UNIQUE KEY `KitchenTaskSummaries_service_id_uindex` (`service_id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
+  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,7 +78,7 @@ LOCK TABLES `KitchenTaskSummaries` WRITE;
     DISABLE KEYS */;
 INSERT INTO `KitchenTaskSummaries`
 VALUES (1, 2),
-       (2, 7);
+       (3, 3);
 /*!40000 ALTER TABLE `KitchenTaskSummaries`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -119,16 +119,16 @@ DROP TABLE IF EXISTS `KitchenTasks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `KitchenTasks`
 (
-    `id`                      int(11)      NOT NULL AUTO_INCREMENT,
-    `preparation_time`        int(11)      NOT NULL,
-    `product_quantity`        varchar(120) NOT NULL,
-    `to_prepare`              tinyint(1)   NOT NULL,
-    `completed`               tinyint(1)   NOT NULL,
-    `kitchen_task_summary_id` int(11)      NOT NULL,
-    `recipe_id`               int(11)      NOT NULL,
+    `id`                      int(11)    NOT NULL AUTO_INCREMENT,
+    `preparation_time`        int(11)             DEFAULT NULL,
+    `product_quantity`        varchar(120)        DEFAULT NULL,
+    `to_prepare`              tinyint(1) NOT NULL DEFAULT 1,
+    `is_completed`            tinyint(1) NOT NULL DEFAULT 0,
+    `kitchen_task_summary_id` int(11)    NOT NULL,
+    `recipe_id`               int(11)    NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 7
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -140,7 +140,8 @@ LOCK TABLES `KitchenTasks` WRITE;
 /*!40000 ALTER TABLE `KitchenTasks`
     DISABLE KEYS */;
 INSERT INTO `KitchenTasks`
-VALUES (1, 8, '200', 1, 0, 1, 9);
+VALUES (1, 8, '200 cornetti', 1, 0, 1, 9),
+       (2, NULL, NULL, 1, 0, 3, 2);
 /*!40000 ALTER TABLE `KitchenTasks`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -630,4 +631,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-29 10:21:50
+-- Dump completed on 2020-06-29 13:27:04
