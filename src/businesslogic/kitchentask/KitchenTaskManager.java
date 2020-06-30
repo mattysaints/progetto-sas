@@ -76,7 +76,7 @@ public class KitchenTaskManager {
             throw new UseCaseLogicException();
         if (turn != null && turn.isFull())
             throw new TurnException();
-        if (cook != null && !cook.isAvailable(turn))
+        if (cook != null && !cook.isAvailableIn(turn))
             throw new StaffException();
 
         currentKitchenTaskSummary.assignKitchenTask(kitchenTask, turn, cook, time, quantity, toPrepare, isCompleted);

@@ -51,7 +51,8 @@ public class KitchenTaskSummaryContent {
     public void initialize(ServiceInfo service) {
         dettaglioServizioLabel.setText(service.toString());
         selectTurn.setItems(FXCollections.observableList(TurnBoard.getInstance().getTurns()));
-        selectCook.setItems(FXCollections.observableList(User.loadCooks()));
+        ObservableList<User> cooks = FXCollections.observableList(User.loadCooks());
+        selectCook.setItems(cooks);
 
         KitchenTaskSummary summary = CatERing.getInstance().getKitchenTaskManager().getCurrentKitchenTaskSummary();
         kitchenTasks = FXCollections.observableArrayList();
@@ -65,6 +66,7 @@ public class KitchenTaskSummaryContent {
                 dettaglioCompitoLabel.setText("");
                 selectTurn.getSelectionModel().select(null);
                 selectCook.getSelectionModel().select(null);
+                selectCook.setItems(cooks);
                 completatoCheckBox.setSelected(false);
                 daPreparareCheckBox.setSelected(false);
                 quantityField.setText("");
@@ -85,6 +87,14 @@ public class KitchenTaskSummaryContent {
             assignKitchenTaskPane.setVisible(true);
             deleteKitchenTaskButton.setDisable(false);
             bindAssegnaButton();
+        });
+
+
+        selectTurn.getSelectionModel().selectedItemProperty().addListener((obs, old, turn) -> {
+            if (turn == null)
+                selectCook.setItems(FXCollections.emptyObservableList());
+            else
+                selectCook.setItems(cooks.filtered(user -> user.isAvailableIn(turn)));
         });
 
         assegnaButton.setDisable(true);

@@ -1,6 +1,7 @@
 package businesslogic.user;
 
 import businesslogic.turn.Turn;
+import businesslogic.turn.TurnBoard;
 import javafx.collections.FXCollections;
 import persistence.PersistenceManager;
 import persistence.ResultHandler;
@@ -19,19 +20,21 @@ public class User {
     private int id;
     private String username;
     private final Set<Role> roles;
+    private final Set<Turn> isAvailableTurn;
 
     public User() {
         id = 0;
         username = "";
         this.roles = new HashSet<>();
+        this.isAvailableTurn = new HashSet<>();
     }
 
     public boolean isChef() {
         return roles.contains(Role.CHEF);
     }
 
-    public boolean isAvailable(Turn turn) {
-        return true;
+    public boolean isAvailableIn(Turn turn) {
+        return isAvailableTurn.contains(turn);
     }
 
     public String getUserName() {
@@ -87,6 +90,18 @@ public class User {
                 }
             }
         });
+
+        String turnsQuery = "SELECT * FROM UserTurns";
+        PersistenceManager.executeQuery(turnsQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                int user_id = rs.getInt(1);
+                int turn_id = rs.getInt(2);
+                User load = loadedUsers.get(user_id);
+                load.isAvailableTurn.add(TurnBoard.getInstance().getTurnById(turn_id));
+            }
+        });
+
         return new ArrayList<>(loadedUsers.values());
     }
 
@@ -112,18 +127,21 @@ public class User {
                 public void handle(ResultSet rs) throws SQLException {
                     String role = rs.getString("role_id");
                     switch (role.charAt(0)) {
-                        case 'c':
-                            load.roles.add(User.Role.CUOCO);
-                            break;
-                        case 'h':
-                            load.roles.add(User.Role.CHEF);
-                            break;
-                        case 'o':
-                            load.roles.add(User.Role.ORGANIZZATORE);
-                            break;
-                        case 's':
-                            load.roles.add(User.Role.SERVIZIO);
+                        case 'c' -> load.roles.add(Role.CUOCO);
+                        case 'h' -> load.roles.add(Role.CHEF);
+                        case 'o' -> load.roles.add(Role.ORGANIZZATORE);
+                        case 's' -> load.roles.add(Role.SERVIZIO);
                     }
+                }
+            });
+            String turnsQuery = "SELECT * FROM UserTurns WHERE user_id ='" + load.id + "'";
+            PersistenceManager.executeQuery(turnsQuery, new ResultHandler() {
+                @Override
+                public void handle(ResultSet rs) throws SQLException {
+                    int user_id = rs.getInt(1);
+                    int turn_id = rs.getInt(2);
+                    User load = loadedUsers.get(user_id);
+                    load.isAvailableTurn.add(TurnBoard.getInstance().getTurnById(turn_id));
                 }
             });
         }
