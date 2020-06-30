@@ -352,8 +352,7 @@ LOCK TABLES `Menus` WRITE;
 INSERT INTO `Menus`
 VALUES (80, 'Coffee break mattutino', 2, 1),
        (82, 'Coffee break pomeridiano', 2, 1),
-       (86, 'Cena di compleanno pesce', 3, 1),
-       (90, 'Menu di merda', 2, 0);
+       (86, 'Cena di compleanno pesce', 3, 1);
 /*!40000 ALTER TABLE `Menus`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -649,4 +648,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-30 13:59:27
+-- Dump completed on 2020-06-30 14:00:26
