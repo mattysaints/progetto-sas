@@ -5,6 +5,7 @@ import persistence.ResultHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface KitchenItem {
 
@@ -21,25 +22,42 @@ public interface KitchenItem {
     // STATIC METHOS FOR PERSISTENCE
 
     static KitchenItem loadKitchenItem(int item_id) {
-        KitchenPreparation preparation = new KitchenPreparation(null);
-        Recipe recipe = new Recipe(null);
+        ArrayList<KitchenItem> result = new ArrayList<>();
         String kitchenItemQuery = "SELECT * FROM Recipes WHERE id = '" + item_id + "'";
         PersistenceManager.executeQuery(kitchenItemQuery, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
                 if (rs.getBoolean(3)) {
-                    preparation.setId(rs.getInt(1));
-                    preparation.setName(rs.getString(2));
+                    KitchenPreparation prep = new KitchenPreparation(rs.getString(2));
+                    prep.setId(rs.getInt(1));
+                    result.add(prep);
                 } else {
+                    Recipe recipe = new Recipe(rs.getString(2));
                     recipe.setId(rs.getInt(1));
-                    recipe.setName(rs.getString(2));
+                    result.add(recipe);
                 }
             }
         });
+        return result.get(0);
+    }
 
-        if (preparation.getId() == 0)
-            return recipe;
-        else
-            return preparation;
+    static ArrayList<KitchenItem> loadAllKitchenItems() {
+        ArrayList<KitchenItem> result = new ArrayList<>();
+        String kitchenItemQuery = "SELECT * FROM Recipes";
+        PersistenceManager.executeQuery(kitchenItemQuery, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                if (rs.getBoolean(3)) {
+                    KitchenPreparation prep = new KitchenPreparation(rs.getString(2));
+                    prep.setId(rs.getInt(1));
+                    result.add(prep);
+                } else {
+                    Recipe recipe = new Recipe(rs.getString(2));
+                    recipe.setId(rs.getInt(1));
+                    result.add(recipe);
+                }
+            }
+        });
+        return result;
     }
 }
