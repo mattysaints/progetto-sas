@@ -22,13 +22,9 @@ public class KitchenTask {
             Comparator.comparing(KitchenTask::getToPrepare).reversed()
                     .thenComparing(KitchenTask::isCompleted);
     public static final Comparator<KitchenTask> DIFFICULT_FIRST =
-            TO_PREPARE_NOT_COMPLETED_FIRST
-                    .thenComparingInt((KitchenTask kt) -> kt.getKitchenItem().getDifficulty())
-                    .thenComparing(KitchenTask::getPreparationTime);
+            TO_PREPARE_NOT_COMPLETED_FIRST.thenComparingInt((KitchenTask kt) -> kt.getKitchenItem().getDifficulty()).reversed();
     public static final Comparator<KitchenTask> LONG_FIRST =
-            TO_PREPARE_NOT_COMPLETED_FIRST
-                    .thenComparing(KitchenTask::getPreparationTime)
-                    .thenComparingInt((KitchenTask kt) -> kt.getKitchenItem().getDifficulty());
+            TO_PREPARE_NOT_COMPLETED_FIRST.thenComparing(KitchenTask::getPreparationTime).reversed();
 
     private Turn turn;
     private User cook;
@@ -41,6 +37,7 @@ public class KitchenTask {
 
 
     public KitchenTask(KitchenItem kitchenItem) {
+        toPrepare = true;
         this.setKitchenItem(kitchenItem);
     }
 
@@ -146,10 +143,10 @@ public class KitchenTask {
     }
 
     public static void removeKitchenTask(KitchenTask kitchenTask) {
-        String delTurns = "DELETE FROM KitchenTasksTurnAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
+        String delTurns = "DELETE FROM KitchenTaskTurnAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
         PersistenceManager.executeUpdate(delTurns);
 
-        String delCooks = "DELETE FROM KitchenTasksCookAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
+        String delCooks = "DELETE FROM KitchenTaskCookAssignment WHERE kitchen_task_id='" + kitchenTask.getId() + "'";
         PersistenceManager.executeUpdate(delCooks);
 
         String removeKitchenTask = "DELETE FROM KitchenTasks WHERE id='" + kitchenTask.getId() + "'";
