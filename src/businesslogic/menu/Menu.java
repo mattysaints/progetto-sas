@@ -81,6 +81,13 @@ public class Menu {
 
     }
 
+    public ArrayList<MenuItem> getMenuItems() {
+        ArrayList<MenuItem> result = new ArrayList<>(freeItems);
+        for (Section s : sections)
+            result.addAll(s.getItems());
+        return result;
+    }
+
     public boolean getFeatureValue(String feature) {
         return this.featuresMap.get(feature);
     }

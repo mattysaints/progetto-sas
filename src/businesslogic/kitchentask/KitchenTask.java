@@ -24,7 +24,7 @@ public class KitchenTask {
     public static final Comparator<KitchenTask> DIFFICULT_FIRST =
             TO_PREPARE_NOT_COMPLETED_FIRST.thenComparingInt((KitchenTask kt) -> kt.getKitchenItem().getDifficulty()).reversed();
     public static final Comparator<KitchenTask> LONG_FIRST =
-            TO_PREPARE_NOT_COMPLETED_FIRST.thenComparing(KitchenTask::getPreparationTime).reversed();
+            TO_PREPARE_NOT_COMPLETED_FIRST.thenComparing(Comparator.comparing(KitchenTask::getPreparationTime).reversed());
 
     private Turn turn;
     private User cook;

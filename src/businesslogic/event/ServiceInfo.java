@@ -1,6 +1,9 @@
 package businesslogic.event;
 
 import businesslogic.kitchentask.KitchenTaskSummary;
+import businesslogic.menu.Menu;
+import businesslogic.menu.MenuItem;
+import businesslogic.recipe.KitchenItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.PersistenceManager;
@@ -10,6 +13,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ServiceInfo implements EventItemInfo {
     private int id;
@@ -19,6 +24,7 @@ public class ServiceInfo implements EventItemInfo {
     private Time timeEnd;
     private int participants;
     private KitchenTaskSummary kitchenTaskSummary;
+    private Menu menu;
 
     public ServiceInfo(String name) {
         this.name = name;
@@ -36,6 +42,8 @@ public class ServiceInfo implements EventItemInfo {
 
     public String toString() {
         String s = name + ": " + date + " (" + timeStart + "-" + timeEnd + "), " + participants + " pp.";
+        if (menu != null)
+            s += " - Menu: " + menu.getTitle();
         if (kitchenTaskSummary != null)
             s += " (" + kitchenTaskSummary + ")";
         return s;
@@ -53,11 +61,17 @@ public class ServiceInfo implements EventItemInfo {
         this.id = id;
     }
 
+    public ArrayList<KitchenItem> getMenuKitchenItems() {
+        if (menu == null)
+            return null;
+        return menu.getMenuItems().stream().map(MenuItem::getItemRecipe).collect(Collectors.toCollection(ArrayList::new));
+    }
+
     // STATIC METHODS FOR PERSISTENCE
 
     public static ObservableList<ServiceInfo> loadServiceInfoForEvent(int event_id) {
         ObservableList<ServiceInfo> result = FXCollections.observableArrayList();
-        String query = "SELECT id, name, service_date, time_start, time_end, expected_participants " +
+        String query = "SELECT id, name, service_date, time_start, time_end, expected_participants, proposed_menu_id " +
                 "FROM Services WHERE event_id = " + event_id;
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
@@ -70,10 +84,17 @@ public class ServiceInfo implements EventItemInfo {
                 serv.timeEnd = rs.getTime("time_end");
                 serv.participants = rs.getInt("expected_participants");
                 serv.kitchenTaskSummary = KitchenTaskSummary.loadKitchenTaskSummaryForService(serv.id);
+                int menu_id = rs.getInt("proposed_menu_id");
+                if (menu_id > 0)
+                    serv.menu = Menu.loadAllMenus().filtered(m -> m.getId() == menu_id).get(0);
                 result.add(serv);
             }
         });
 
         return result;
+    }
+
+    public Menu getMenu() {
+        return menu;
     }
 }

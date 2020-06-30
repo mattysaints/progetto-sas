@@ -29,12 +29,16 @@ public class User {
         this.isAvailableTurn = new HashSet<>();
     }
 
+    public boolean isManager() {
+        return roles.contains(Role.ORGANIZZATORE);
+    }
+
     public boolean isChef() {
         return roles.contains(Role.CHEF);
     }
 
     public boolean isAvailableIn(Turn turn) {
-        return isAvailableTurn.contains(turn);
+        return isAvailableTurn.contains(turn) || roles.contains(Role.CHEF) || roles.contains(Role.ORGANIZZATORE);
     }
 
     public String getUserName() {

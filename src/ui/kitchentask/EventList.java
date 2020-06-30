@@ -69,7 +69,8 @@ public class EventList {
             apriButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
                     || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() == null);
             creaButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
-                    || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() != null);
+                    || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() != null
+                    || ((ServiceInfo) newV.getValue()).getMenu() == null);
         });
 
         eventList.setRoot(root);

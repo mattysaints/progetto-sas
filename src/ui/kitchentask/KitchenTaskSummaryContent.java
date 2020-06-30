@@ -11,17 +11,22 @@ import businesslogic.recipe.KitchenItem;
 import businesslogic.turn.Turn;
 import businesslogic.turn.TurnBoard;
 import businesslogic.user.User;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class KitchenTaskSummaryContent {
     private KitchenTaskManagement kitchenTaskManagement;
     private ObservableList<KitchenTask> kitchenTasks;
+    private ArrayList<KitchenItem> serviceMenuKitchenItems;
+    private ServiceInfo service;
+    private SimpleIntegerProperty preparationTime;
 
     @FXML
     private ListView<KitchenTask> kitchenTaskList;
@@ -34,7 +39,7 @@ public class KitchenTaskSummaryContent {
     @FXML
     private ChoiceBox<User> selectCook;
     @FXML
-    private Spinner<Integer> timeField;
+    private Spinner<Integer> minutiField;
     @FXML
     private CheckBox completatoCheckBox;
     @FXML
@@ -47,12 +52,15 @@ public class KitchenTaskSummaryContent {
     private Label dettaglioCompitoLabel;
     @FXML
     private Button assegnaButton;
+    @FXML
+    private Spinner<Integer> oreField;
 
     public void initialize(ServiceInfo service) {
+        this.service = service;
+        serviceMenuKitchenItems = service.getMenuKitchenItems();
         dettaglioServizioLabel.setText(service.toString());
         selectTurn.setItems(FXCollections.observableList(TurnBoard.getInstance().getTurns()));
         ObservableList<User> cooks = FXCollections.observableList(User.loadCooks());
-        selectCook.setItems(cooks);
 
         KitchenTaskSummary summary = CatERing.getInstance().getKitchenTaskManager().getCurrentKitchenTaskSummary();
         kitchenTasks = FXCollections.observableArrayList();
@@ -70,7 +78,8 @@ public class KitchenTaskSummaryContent {
                 completatoCheckBox.setSelected(false);
                 daPreparareCheckBox.setSelected(false);
                 quantityField.setText("");
-                timeField.getValueFactory().setValue(0);
+                oreField.getValueFactory().setValue(0);
+                minutiField.getValueFactory().setValue(0);
                 assignKitchenTaskPane.setVisible(false);
                 assegnaButton.disableProperty().unbind();
                 return;
@@ -82,7 +91,8 @@ public class KitchenTaskSummaryContent {
             completatoCheckBox.setSelected(kt.isCompleted());
             daPreparareCheckBox.setSelected(kt.getToPrepare());
             quantityField.setText(kt.getProductQuantity());
-            timeField.getValueFactory().setValue(kt.getPreparationTime());
+            oreField.getValueFactory().setValue(kt.getPreparationTime() / 60);
+            minutiField.getValueFactory().setValue(kt.getPreparationTime() % 60);
 
             assignKitchenTaskPane.setVisible(true);
             deleteKitchenTaskButton.setDisable(false);
@@ -94,7 +104,7 @@ public class KitchenTaskSummaryContent {
             if (turn == null)
                 selectCook.setItems(FXCollections.emptyObservableList());
             else
-                selectCook.setItems(cooks.filtered(user -> user.isAvailableIn(turn)));
+                selectCook.setItems(cooks.filtered(user -> user.isAvailableIn(turn) || user.isChef() || user.isManager()));
         });
 
         completatoCheckBox.setDisable(true);
@@ -102,6 +112,10 @@ public class KitchenTaskSummaryContent {
                 .or(selectCook.getSelectionModel().selectedItemProperty().isNull()));
 
         assegnaButton.setDisable(true);
+
+        preparationTime = new SimpleIntegerProperty();
+        oreField.valueProperty().addListener((obs, old, ore) -> preparationTime.setValue(ore * 60 + minutiField.getValue()));
+        minutiField.valueProperty().addListener((obs, old, minuti) -> preparationTime.setValue(oreField.getValue() * 60 + minuti));
     }
 
     @FXML
@@ -111,7 +125,7 @@ public class KitchenTaskSummaryContent {
 
     @FXML
     private void addKitchenTaskPressed() throws UseCaseLogicException {
-        ObservableList<KitchenItem> choices = FXCollections.observableArrayList(KitchenItem.loadAllKitchenItems());
+        ObservableList<KitchenItem> choices = FXCollections.observableArrayList(serviceMenuKitchenItems);
         ChoiceDialog<KitchenItem> dialog = new ChoiceDialog<>();
         for (KitchenItem r : choices)
             dialog.getItems().add(r);
@@ -124,6 +138,8 @@ public class KitchenTaskSummaryContent {
             KitchenTask kitchenTask = CatERing.getInstance().getKitchenTaskManager().addKitchenTask(result.get());
             kitchenTasks.add(kitchenTask);
         }
+
+        dettaglioServizioLabel.setText(service.toString());
     }
 
     @FXML
@@ -131,6 +147,8 @@ public class KitchenTaskSummaryContent {
         KitchenTask kitchenTask = kitchenTaskList.getSelectionModel().getSelectedItem();
         CatERing.getInstance().getKitchenTaskManager().removeKitchenTask(kitchenTask);
         kitchenTasks.remove(kitchenTask);
+
+        dettaglioServizioLabel.setText(service.toString());
     }
 
     @FXML
@@ -160,7 +178,7 @@ public class KitchenTaskSummaryContent {
         User cook = selectCook.getValue();
         boolean toPrepare = daPreparareCheckBox.isSelected();
         boolean isCompleted = completatoCheckBox.isSelected();
-        int preparationTime = timeField.getValue();
+        int preparationTime = oreField.getValue() * 60 + minutiField.getValue();
         String productQuantity = quantityField.getText();
         CatERing.getInstance().getKitchenTaskManager().assignKitchenTask(kitchenTask, turn, cook, preparationTime, productQuantity, toPrepare, isCompleted);
         kitchenTaskList.refresh();
@@ -175,7 +193,7 @@ public class KitchenTaskSummaryContent {
                 .and(completatoCheckBox.selectedProperty().asString().isEqualTo(Boolean.toString(kitchenTaskList.getSelectionModel().selectedItemProperty().getValue().isCompleted())))
                 .and(daPreparareCheckBox.selectedProperty().asString().isEqualTo(Boolean.toString(kitchenTaskList.getSelectionModel().selectedItemProperty().getValue().getToPrepare())))
                 .and(quantityField.textProperty().isEqualTo(kitchenTaskList.getSelectionModel().selectedItemProperty().getValue().getProductQuantity()))
-                .and(timeField.valueProperty().isEqualTo(kitchenTaskList.getSelectionModel().selectedItemProperty().getValue().getPreparationTime())));
+                .and(preparationTime.isEqualTo(kitchenTaskList.getSelectionModel().getSelectedItem().getPreparationTime())));
     }
 
     public void setMenuManagementController(KitchenTaskManagement kitchenTaskManagement) {

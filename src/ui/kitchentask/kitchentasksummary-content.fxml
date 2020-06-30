@@ -171,7 +171,7 @@
                         </Label>
                         <TextField fx:id="quantityField" prefHeight="25.0" prefWidth="149.0" GridPane.columnIndex="1"
                                    GridPane.rowIndex="3"/>
-                        <Label text="Tempo stimato (minuti):" GridPane.rowIndex="2">
+                        <Label text="Tempo stimato (ore, minuti):" GridPane.rowIndex="2">
                            <font>
                               <Font size="12.0"/>
                            </font>
@@ -185,9 +185,15 @@
                                   GridPane.columnIndex="1" GridPane.rowIndex="4"/>
                         <CheckBox fx:id="daPreparareCheckBox" mnemonicParsing="false" text="Da preparare"
                                   GridPane.rowIndex="4"/>
-                        <Spinner fx:id="timeField" amountToStepBy="1" editable="true" max="99999999" min="0"
-                                 prefHeight="26.0" prefWidth="301.0" promptText="Minuti" GridPane.columnIndex="1"
-                                 GridPane.rowIndex="2"/>
+                        <FlowPane alignment="CENTER_LEFT" hgap="10.0" prefHeight="41.0" prefWidth="313.0" vgap="10.0"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Spinner fx:id="oreField" amountToStepBy="1" editable="false" max="99999999" min="0"
+                                       prefHeight="26.0" prefWidth="100.0" promptText="Minuti"/>
+                              <Spinner fx:id="minutiField" amountToStepBy="1" editable="false" max="99999999" min="0"
+                                       prefHeight="26.0" prefWidth="100.0" promptText="Minuti"/>
+                           </children>
+                        </FlowPane>
                         <Label prefHeight="17.0" prefWidth="86.0" text="Scegli turno: ">
                            <font>
                               <Font size="12.0"/>
