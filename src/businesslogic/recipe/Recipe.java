@@ -48,7 +48,7 @@ public class Recipe implements KitchenItem {
     // STATIC METHODS FOR PERSISTENCE
 
     public static ObservableList<Recipe> loadAllRecipes() {
-        String query = "SELECT * FROM Recipes";
+        String query = "SELECT * FROM Recipes WHERE is_preparation = 'false'";
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
@@ -80,7 +80,7 @@ public class Recipe implements KitchenItem {
     public static Recipe loadRecipeById(int id) {
         if (all.containsKey(id)) return all.get(id);
         Recipe rec = new Recipe();
-        String query = "SELECT * FROM Recipes WHERE id = " + id;
+        String query = "SELECT * FROM Recipes WHERE is_preparation = 'false' AND id = " + id;
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
