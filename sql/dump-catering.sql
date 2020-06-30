@@ -74,6 +74,9 @@ CREATE TABLE `KitchenTaskCookAssignment`
 LOCK TABLES `KitchenTaskCookAssignment` WRITE;
 /*!40000 ALTER TABLE `KitchenTaskCookAssignment`
     DISABLE KEYS */;
+INSERT INTO `KitchenTaskCookAssignment`
+VALUES (1, 4),
+       (18, 4);
 /*!40000 ALTER TABLE `KitchenTaskCookAssignment`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -136,7 +139,9 @@ LOCK TABLES `KitchenTaskTurnAssignment` WRITE;
 INSERT INTO `KitchenTaskTurnAssignment`
 VALUES (1, 1),
        (2, 1),
-       (7, 1);
+       (7, 1),
+       (8, 1),
+       (18, 3);
 /*!40000 ALTER TABLE `KitchenTaskTurnAssignment`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -159,7 +164,7 @@ CREATE TABLE `KitchenTasks`
     `recipe_id`               int(11)    NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 8
+  AUTO_INCREMENT = 19
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -171,9 +176,11 @@ LOCK TABLES `KitchenTasks` WRITE;
 /*!40000 ALTER TABLE `KitchenTasks`
     DISABLE KEYS */;
 INSERT INTO `KitchenTasks`
-VALUES (1, 1, '', 0, 0, 1, 9),
+VALUES (1, 120, '', 0, 0, 1, 9),
        (2, 0, '', 0, 0, 3, 2),
-       (7, 2, '200 porzioni', 1, 0, 1, 4);
+       (7, 2, '200 porzioni', 1, 0, 1, 4),
+       (17, NULL, NULL, 1, 0, 1, 1),
+       (18, 0, NULL, 1, 0, 1, 21);
 /*!40000 ALTER TABLE `KitchenTasks`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -216,7 +223,12 @@ VALUES (80, 'Richiede cuoco', 0),
        (86, 'Buffet', 0),
        (86, 'Richiede cucina', 0),
        (86, 'Finger food', 0),
-       (86, 'Piatti caldi', 0);
+       (86, 'Piatti caldi', 0),
+       (90, 'Richiede cuoco', 0),
+       (90, 'Buffet', 0),
+       (90, 'Richiede cucina', 0),
+       (90, 'Finger food', 0),
+       (90, 'Piatti caldi', 0);
 /*!40000 ALTER TABLE `MenuFeatures`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -326,7 +338,7 @@ CREATE TABLE `Menus`
     `published` tinyint(1) DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 90
+  AUTO_INCREMENT = 91
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -340,7 +352,8 @@ LOCK TABLES `Menus` WRITE;
 INSERT INTO `Menus`
 VALUES (80, 'Coffee break mattutino', 2, 1),
        (82, 'Coffee break pomeridiano', 2, 1),
-       (86, 'Cena di compleanno pesce', 3, 1);
+       (86, 'Cena di compleanno pesce', 3, 1),
+       (90, 'Menu di merda', 2, 0);
 /*!40000 ALTER TABLE `Menus`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -636,4 +649,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-29 19:27:34
+-- Dump completed on 2020-06-30 13:59:27
