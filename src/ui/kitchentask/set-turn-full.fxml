@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane prefHeight="395.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.kitchentask.SetTurnFull">
+   <center>
+      <GridPane hgap="10.0" prefHeight="367.0" prefWidth="657.0" vgap="10.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="300.0" prefWidth="300.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints fillHeight="false" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="50.0" minHeight="150.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+         </rowConstraints>
+         <children>
+            <ListView fx:id="kitchenTaskList" minHeight="300.0" prefHeight="400.0" prefWidth="335.0"
+                      GridPane.rowSpan="4"/>
+            <Label text="Turno: " GridPane.columnIndex="1"/>
+            <ChoiceBox fx:id="turnChoiceBox" prefHeight="26.0" prefWidth="328.0" GridPane.columnIndex="1"
+                       GridPane.rowIndex="1"/>
+            <FlowPane alignment="CENTER" hgap="20.0" vgap="20.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <CheckBox fx:id="isFullCheckBox" mnemonicParsing="false" text="Turno pieno"/>
+                  <Button fx:id="salvaButton" mnemonicParsing="false" onAction="#salvaButtonPressed" prefHeight="26.0"
+                          prefWidth="81.0" text="Salva"/>
+               </children>
+            </FlowPane>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+         </BorderPane.margin>
+      </GridPane>
+   </center>
+   <top>
+      <Label text="Compiti" BorderPane.alignment="CENTER_LEFT">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+         </padding>
+      </Label>
+   </top>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+   </padding>
+   <bottom>
+      <Button mnemonicParsing="false" onAction="#esciButtonPressed" text="Esci" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="10.0"/>
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+</BorderPane>

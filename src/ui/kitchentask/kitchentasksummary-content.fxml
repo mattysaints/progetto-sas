@@ -4,31 +4,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<BorderPane prefHeight="457.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.kitchentask.KitchenTaskSummaryContent">
+<BorderPane prefHeight="457.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.kitchentask.KitchenTaskSummaryContent">
    <top>
       <BorderPane nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
          </BorderPane.margin>
          <center>
             <FlowPane alignment="CENTER_LEFT" minHeight="50.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="titleLabel" alignment="CENTER" prefHeight="26.0" prefWidth="221.0" text="Foglio riepilogativo:">
+                  <Label fx:id="titleLabel" alignment="CENTER" prefHeight="26.0" prefWidth="221.0"
+                         text="Foglio riepilogativo:">
                      <font>
-                        <Font size="21.0" />
+                        <Font size="21.0"/>
                      </font>
                   </Label>
                   <Label fx:id="dettaglioServizioLabel" text="Dettaglio servizio">
                      <padding>
-                        <Insets left="20.0" />
+                        <Insets left="20.0"/>
                      </padding>
                   </Label>
-                  <FlowPane fx:id="contrassegnaTurno" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="279.0">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#contrassegnaTurnoButtonPressed" prefHeight="25.0" prefWidth="121.0" text="Contrassegna turno" />
-                     </children>
-                  </FlowPane>
+                  <Button mnemonicParsing="false" onAction="#contrassegnaTurniPieniButtonPressed" prefHeight="26.0"
+                          prefWidth="98.0" text="Stato turni">
+                     <FlowPane.margin>
+                        <Insets left="20.0"/>
+                     </FlowPane.margin>
+                  </Button>
                </children>
             </FlowPane>
          </center>

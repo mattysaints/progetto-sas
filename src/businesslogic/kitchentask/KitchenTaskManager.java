@@ -7,6 +7,7 @@ import businesslogic.UseCaseLogicException;
 import businesslogic.event.ServiceInfo;
 import businesslogic.recipe.KitchenItem;
 import businesslogic.turn.Turn;
+import businesslogic.turn.TurnBoard;
 import businesslogic.user.User;
 
 import java.util.ArrayList;
@@ -83,7 +84,14 @@ public class KitchenTaskManager {
         this.notifyKitchenTaskAssigned(kitchenTask);
     }
 
-    // <editor-fold desc="********** Event sender methods **********" defaultstate=collapsed>
+    public void setTurnFull(Turn turn, boolean isFull) throws UseCaseLogicException {
+        if (currentKitchenTaskSummary == null)
+            throw new UseCaseLogicException();
+        TurnBoard.getInstance().setTurnFull(turn, isFull);
+        this.notifyTurnSetFull(turn);
+    }
+
+    // <editor-fold desc="********** Event sender methods **********" defaultstate="collapsed">
 
     private void notifyKitchenTaskAdded(KitchenTaskSummary kitchenTaskSummary, KitchenTask kitchenTask) {
         for (KitchenTaskEventReceiver er : eventReceivers)
@@ -104,6 +112,11 @@ public class KitchenTaskManager {
     private void notifyKitchenTaskSummaryCreated(ServiceInfo service, KitchenTaskSummary kitchenTaskSummary) {
         for (KitchenTaskEventReceiver er : eventReceivers)
             er.updateKitchenTaskSummaryCreated(service, kitchenTaskSummary);
+    }
+
+    private void notifyTurnSetFull(Turn turn) {
+        for (KitchenTaskEventReceiver er : eventReceivers)
+            er.updateTurnSetFull(turn);
     }
 
     public void addEventReceiver(KitchenTaskEventReceiver eventReceiver) {

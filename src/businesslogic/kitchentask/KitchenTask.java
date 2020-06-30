@@ -11,10 +11,8 @@ import persistence.ResultHandler;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class KitchenTask {
     // Some default KitchenTask comparators
@@ -25,6 +23,8 @@ public class KitchenTask {
             TO_PREPARE_NOT_COMPLETED_FIRST.thenComparingInt((KitchenTask kt) -> kt.getKitchenItem().getDifficulty()).reversed();
     public static final Comparator<KitchenTask> LONG_FIRST =
             TO_PREPARE_NOT_COMPLETED_FIRST.thenComparing(Comparator.comparing(KitchenTask::getPreparationTime).reversed());
+
+    private static Map<Integer, Set<KitchenTask>> kitchenTasksSummaryMap;
 
     private Turn turn;
     private User cook;
@@ -91,6 +91,14 @@ public class KitchenTask {
 
     private int getId() {
         return id;
+    }
+
+    public void setToPrepare(boolean toPrepare) {
+        this.toPrepare = toPrepare;
+    }
+
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     @Override
@@ -174,8 +182,15 @@ public class KitchenTask {
 
 
     public static ArrayList<KitchenTask> loadKitchenTasksFromSummary(int summary_id) {
-        Map<Integer, KitchenTask> result = new HashMap<>();
-        String kitchenTasksQuery = "SELECT * FROM KitchenTasks WHERE kitchen_task_summary_id = '" + summary_id + "'";
+        if (kitchenTasksSummaryMap == null)
+            loadAllKitchenTasks();
+        return new ArrayList<>(kitchenTasksSummaryMap.get(summary_id));
+    }
+
+
+    public static ArrayList<KitchenTask> loadAllKitchenTasks() {
+        kitchenTasksSummaryMap = new HashMap<>();
+        String kitchenTasksQuery = "SELECT * FROM KitchenTasks";
         PersistenceManager.executeQuery(kitchenTasksQuery, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
@@ -186,7 +201,12 @@ public class KitchenTask {
                 kt.productQuantity = rs.getString(3);
                 kt.toPrepare = rs.getBoolean(4);
                 kt.isCompleted = rs.getBoolean(5);
-                result.put(kt.id, kt);
+
+                int summary_id = rs.getInt(6);
+                if (!kitchenTasksSummaryMap.containsKey(summary_id))
+                    kitchenTasksSummaryMap.put(summary_id, new HashSet<>());
+                else
+                    kitchenTasksSummaryMap.get(summary_id).add(kt);
             }
         });
 
@@ -196,8 +216,11 @@ public class KitchenTask {
             public void handle(ResultSet rs) throws SQLException {
                 int kitchenTask_id = rs.getInt(1);
                 int turn_id = rs.getInt(2);
-                if (result.containsKey(kitchenTask_id))
-                    result.get(kitchenTask_id).setTurn(TurnBoard.getInstance().getTurnById(turn_id));
+                kitchenTasksSummaryMap.values().forEach(set -> {
+                    List<KitchenTask> kitchenTaskList = set.stream().filter(el -> el.getId() == kitchenTask_id).collect(Collectors.toList());
+                    if (!kitchenTaskList.isEmpty())
+                        kitchenTaskList.get(0).setTurn(TurnBoard.getInstance().getTurnById(turn_id));
+                });
             }
         });
 
@@ -207,19 +230,18 @@ public class KitchenTask {
             public void handle(ResultSet rs) throws SQLException {
                 int kitchenTask_id = rs.getInt(1);
                 int user_id = rs.getInt(2);
-                if (result.containsKey(kitchenTask_id))
-                    result.get(kitchenTask_id).setCook(User.loadUserById(user_id));
+                kitchenTasksSummaryMap.values().forEach(set -> {
+                    List<KitchenTask> kitchenTaskList = set.stream().filter(el -> el.getId() == kitchenTask_id).collect(Collectors.toList());
+                    if (!kitchenTaskList.isEmpty())
+                        kitchenTaskList.get(0).setCook(User.loadUserById(user_id));
+                });
             }
         });
 
-        return new ArrayList<>(result.values());
-    }
+        ArrayList<KitchenTask> result = new ArrayList<>();
+        for (Set<KitchenTask> set : kitchenTasksSummaryMap.values())
+            result.addAll(set);
 
-    public void setToPrepare(boolean toPrepare) {
-        this.toPrepare = toPrepare;
-    }
-
-    public void setIsCompleted(boolean isCompleted) {
-        this.isCompleted = isCompleted;
+        return result;
     }
 }

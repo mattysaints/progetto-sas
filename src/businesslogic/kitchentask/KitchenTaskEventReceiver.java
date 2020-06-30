@@ -1,6 +1,7 @@
 package businesslogic.kitchentask;
 
 import businesslogic.event.ServiceInfo;
+import businesslogic.turn.Turn;
 
 public interface KitchenTaskEventReceiver {
     void updateKitchenTaskSummaryCreated(ServiceInfo service, KitchenTaskSummary kitchenTaskSummary);
@@ -10,4 +11,6 @@ public interface KitchenTaskEventReceiver {
     void updateKitchenTaskRemoved(KitchenTaskSummary kitchenTaskSummary, KitchenTask kitchenTask);
 
     void updateKitchenTaskAssigned(KitchenTask kitchenTask);
+
+    void updateTurnSetFull(Turn turn);
 }

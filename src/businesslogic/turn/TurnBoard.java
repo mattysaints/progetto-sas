@@ -39,6 +39,7 @@ public class TurnBoard {
                 turn.setId(rs.getInt(1));
                 turn.setTimeStart(rs.getTime(2));
                 turn.setTimeEnd(rs.getTime(3));
+                turn.setIsFull(rs.getBoolean(4));
                 turns.put(turn.getId(), turn);
             }
         });
@@ -48,4 +49,9 @@ public class TurnBoard {
         return turns.get(turn_id);
     }
 
+    public void setTurnFull(Turn turn, boolean isFull) {
+        if (turns.containsValue(turn)) {
+            turn.setIsFull(isFull);
+        }
+    }
 }

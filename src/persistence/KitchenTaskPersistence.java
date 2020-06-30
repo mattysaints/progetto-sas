@@ -4,6 +4,7 @@ import businesslogic.event.ServiceInfo;
 import businesslogic.kitchentask.KitchenTask;
 import businesslogic.kitchentask.KitchenTaskEventReceiver;
 import businesslogic.kitchentask.KitchenTaskSummary;
+import businesslogic.turn.Turn;
 
 public class KitchenTaskPersistence implements KitchenTaskEventReceiver {
     @Override
@@ -24,5 +25,10 @@ public class KitchenTaskPersistence implements KitchenTaskEventReceiver {
     @Override
     public void updateKitchenTaskAssigned(KitchenTask kitchenTask) {
         KitchenTask.updateKitchenTask(kitchenTask);
+    }
+
+    @Override
+    public void updateTurnSetFull(Turn turn) {
+        Turn.saveTurn(turn);
     }
 }

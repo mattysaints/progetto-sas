@@ -14,11 +14,15 @@ import businesslogic.user.User;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -60,7 +64,7 @@ public class KitchenTaskSummaryContent {
         this.service = service;
         serviceMenuKitchenItems = service.getMenuKitchenItems();
         dettaglioServizioLabel.setText(service.toString());
-        selectTurn.setItems(FXCollections.observableList(TurnBoard.getInstance().getTurns()));
+        selectTurn.setItems(FXCollections.observableArrayList(TurnBoard.getInstance().getTurns()));
         ObservableList<User> cooks = FXCollections.observableList(User.loadCooks());
 
         KitchenTaskSummary summary = CatERing.getInstance().getKitchenTaskManager().getCurrentKitchenTaskSummary();
@@ -108,6 +112,8 @@ public class KitchenTaskSummaryContent {
                 selectCook.setItems(cooks.filtered(user -> user.isAvailableIn(turn) || user.isChef() || user.isManager()));
         });
 
+        if (completatoCheckBox.disableProperty().isBound())
+            completatoCheckBox.disableProperty().unbind();
         completatoCheckBox.setDisable(true);
         completatoCheckBox.disableProperty().bind(daPreparareCheckBox.selectedProperty().not()
                 .or(selectCook.getSelectionModel().selectedItemProperty().isNull()));
@@ -173,7 +179,7 @@ public class KitchenTaskSummaryContent {
     }
 
     @FXML
-    private void assegnaButtonPressed() throws UseCaseLogicException, TurnException, StaffException {
+    private void assegnaButtonPressed() {
         KitchenTask kitchenTask = kitchenTaskList.getSelectionModel().getSelectedItem();
         Turn turn = selectTurn.getValue();
         User cook = selectCook.getValue();
@@ -181,11 +187,29 @@ public class KitchenTaskSummaryContent {
         boolean isCompleted = completatoCheckBox.isSelected();
         int preparationTime = oreField.getValue() * 60 + minutiField.getValue();
         String productQuantity = quantityField.getText();
-        CatERing.getInstance().getKitchenTaskManager().assignKitchenTask(kitchenTask, turn, cook, preparationTime, productQuantity, toPrepare, isCompleted);
-        kitchenTaskList.refresh();
-        assegnaButton.disableProperty().unbind();
-        assegnaButton.setDisable(true);
-        bindAssegnaButton();
+        try {
+            CatERing.getInstance().getKitchenTaskManager().assignKitchenTask(kitchenTask, turn, cook, preparationTime, productQuantity, toPrepare, isCompleted);
+            kitchenTaskList.refresh();
+            assegnaButton.disableProperty().unbind();
+            assegnaButton.setDisable(true);
+            bindAssegnaButton();
+        } catch (UseCaseLogicException e) {
+            e.printStackTrace();
+        } catch (TurnException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore");
+            alert.setHeaderText("Turno pieno");
+            alert.setContentText("Il turno selezionato è pieno: " + turn);
+            alert.showAndWait();
+            selectTurn.getSelectionModel().select(null);
+        } catch (StaffException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore");
+            alert.setHeaderText("Cuoco non disponibile");
+            alert.setContentText("Il cuoco '" + cook.getUserName() + "' selezionato non è disponibile nel turno: " + turn);
+            alert.showAndWait();
+            selectCook.getSelectionModel().select(null);
+        }
     }
 
     private void bindAssegnaButton() {
@@ -201,18 +225,25 @@ public class KitchenTaskSummaryContent {
         this.kitchenTaskManagement = kitchenTaskManagement;
     }
 
-    public void contrassegnaTurnoButtonPressed() {
-        ObservableList<Turn> choices = FXCollections.observableArrayList(TurnBoard.getInstance().getTurns());
-        ChoiceDialog<Turn> dialog = new ChoiceDialog<>();
-        for (Turn r : choices)
-            dialog.getItems().add(r);
+    @FXML
+    public void contrassegnaTurniPieniButtonPressed() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("set-turn-full.fxml"));
+        try {
+            BorderPane dialog = loader.load();
+            SetTurnFull dialogController = loader.getController();
+            Stage stage = new Stage();
+            stage.setTitle("Stato turni");
+            dialogController.initialize(stage);
 
-        dialog.setTitle("Contrassegna turno");
-        dialog.setHeaderText("Scegli il turno da contrassegnare come completo");
+            stage.initModality(Modality.APPLICATION_MODAL);
 
-        Optional<Turn> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            result.get().setFull(true);
+            Scene root = new Scene(dialog, 700, 450);
+            stage.setScene(root);
+
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
