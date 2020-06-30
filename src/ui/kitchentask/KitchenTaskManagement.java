@@ -1,6 +1,7 @@
 package ui.kitchentask;
 
 import businesslogic.CatERing;
+import businesslogic.event.ServiceInfo;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -49,8 +50,8 @@ public class KitchenTaskManagement {
         eventListPaneController.setParent(this);
     }
 
-    public void showCurrentKitchenTaskSummary() {
-        kitchenTaskSummaryContentPaneController.initialize();
+    public void showCurrentKitchenTaskSummary(ServiceInfo service) {
+        kitchenTaskSummaryContentPaneController.initialize(service);
         containerPane.setCenter(kitchenTaskContentPane);
     }
 

@@ -36,8 +36,6 @@ public class KitchenPreparation implements KitchenItem {
 
     @Override
     public String toString() {
-        return "KitchenPreparation{" +
-                "name='" + name + '\'' +
-                '}';
+        return name + " (preparazione)";
     }
 }

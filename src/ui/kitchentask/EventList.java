@@ -28,7 +28,7 @@ public class EventList {
         try {
             currentTreeItem = eventList.getSelectionModel().getSelectedItem();
             CatERing.getInstance().getKitchenTaskManager().createKitchenTaskSummary((ServiceInfo) currentTreeItem.getValue());
-            kitchenTaskManagementController.showCurrentKitchenTaskSummary();
+            kitchenTaskManagementController.showCurrentKitchenTaskSummary((ServiceInfo) currentTreeItem.getValue());
         } catch (UseCaseLogicException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class EventList {
         try {
             currentTreeItem = eventList.getSelectionModel().getSelectedItem();
             CatERing.getInstance().getKitchenTaskManager().selectKitchenTaskSummary((ServiceInfo) currentTreeItem.getValue());
-            kitchenTaskManagementController.showCurrentKitchenTaskSummary();
+            kitchenTaskManagementController.showCurrentKitchenTaskSummary((ServiceInfo) currentTreeItem.getValue());
         } catch (UseCaseLogicException ex) {
             ex.printStackTrace();
         }
