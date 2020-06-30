@@ -14,6 +14,7 @@ import businesslogic.user.User;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -198,5 +199,20 @@ public class KitchenTaskSummaryContent {
 
     public void setMenuManagementController(KitchenTaskManagement kitchenTaskManagement) {
         this.kitchenTaskManagement = kitchenTaskManagement;
+    }
+
+    public void contrassegnaTurnoButtonPressed() {
+        ObservableList<Turn> choices = FXCollections.observableArrayList(TurnBoard.getInstance().getTurns());
+        ChoiceDialog<Turn> dialog = new ChoiceDialog<>();
+        for (Turn r : choices)
+            dialog.getItems().add(r);
+
+        dialog.setTitle("Contrassegna turno");
+        dialog.setHeaderText("Scegli il turno da contrassegnare come completo");
+
+        Optional<Turn> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            result.get().setFull(true);
+        }
     }
 }

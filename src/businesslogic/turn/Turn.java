@@ -6,12 +6,17 @@ public class Turn {
     private int id;
     private Time timeStart;
     private Time timeEnd;
+    private boolean isFull;
 
     public Turn() {
     }
 
     public boolean isFull() {
         return false;
+    }
+
+    public void setFull(boolean full) {
+        isFull = full;
     }
 
     public int getId() {
