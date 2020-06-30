@@ -97,6 +97,10 @@ public class KitchenTaskSummaryContent {
                 selectCook.setItems(cooks.filtered(user -> user.isAvailableIn(turn)));
         });
 
+        completatoCheckBox.setDisable(true);
+        completatoCheckBox.disableProperty().bind(daPreparareCheckBox.selectedProperty().not()
+                .or(selectCook.getSelectionModel().selectedItemProperty().isNull()));
+
         assegnaButton.setDisable(true);
     }
 
