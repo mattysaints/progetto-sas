@@ -74,9 +74,6 @@ CREATE TABLE `KitchenTaskCookAssignment`
 LOCK TABLES `KitchenTaskCookAssignment` WRITE;
 /*!40000 ALTER TABLE `KitchenTaskCookAssignment`
     DISABLE KEYS */;
-INSERT INTO `KitchenTaskCookAssignment`
-VALUES (1, 4),
-       (18, 4);
 /*!40000 ALTER TABLE `KitchenTaskCookAssignment`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -95,7 +92,7 @@ CREATE TABLE `KitchenTaskSummaries`
     PRIMARY KEY (`id`),
     UNIQUE KEY `KitchenTaskSummaries_service_id_uindex` (`service_id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 5
+  AUTO_INCREMENT = 7
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -106,9 +103,6 @@ CREATE TABLE `KitchenTaskSummaries`
 LOCK TABLES `KitchenTaskSummaries` WRITE;
 /*!40000 ALTER TABLE `KitchenTaskSummaries`
     DISABLE KEYS */;
-INSERT INTO `KitchenTaskSummaries`
-VALUES (1, 2),
-       (3, 3);
 /*!40000 ALTER TABLE `KitchenTaskSummaries`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -136,12 +130,6 @@ CREATE TABLE `KitchenTaskTurnAssignment`
 LOCK TABLES `KitchenTaskTurnAssignment` WRITE;
 /*!40000 ALTER TABLE `KitchenTaskTurnAssignment`
     DISABLE KEYS */;
-INSERT INTO `KitchenTaskTurnAssignment`
-VALUES (1, 1),
-       (2, 1),
-       (7, 1),
-       (8, 1),
-       (18, 3);
 /*!40000 ALTER TABLE `KitchenTaskTurnAssignment`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -164,7 +152,7 @@ CREATE TABLE `KitchenTasks`
     `recipe_id`               int(11)    NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 19
+  AUTO_INCREMENT = 22
   DEFAULT CHARSET = utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -175,12 +163,6 @@ CREATE TABLE `KitchenTasks`
 LOCK TABLES `KitchenTasks` WRITE;
 /*!40000 ALTER TABLE `KitchenTasks`
     DISABLE KEYS */;
-INSERT INTO `KitchenTasks`
-VALUES (1, 120, '', 0, 0, 1, 9),
-       (2, 0, '', 0, 0, 3, 2),
-       (7, 2, '200 porzioni', 1, 0, 1, 4),
-       (17, NULL, NULL, 1, 0, 1, 1),
-       (18, 0, NULL, 1, 0, 1, 21);
 /*!40000 ALTER TABLE `KitchenTasks`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -228,7 +210,12 @@ VALUES (80, 'Richiede cuoco', 0),
        (90, 'Buffet', 0),
        (90, 'Richiede cucina', 0),
        (90, 'Finger food', 0),
-       (90, 'Piatti caldi', 0);
+       (90, 'Piatti caldi', 0),
+       (91, 'Richiede cuoco', 1),
+       (91, 'Buffet', 0),
+       (91, 'Richiede cucina', 1),
+       (91, 'Finger food', 0),
+       (91, 'Piatti caldi', 1);
 /*!40000 ALTER TABLE `MenuFeatures`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -250,7 +237,7 @@ CREATE TABLE `MenuItems`
     `position`    int(11)  DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 124
+  AUTO_INCREMENT = 129
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -283,7 +270,11 @@ VALUES (96, 80, 0, 'Croissant vuoti', 9, 0),
        (116, 86, 42, 'Risotto alla zucca', 20, 1),
        (117, 86, 43, 'Salmone al forno', 8, 0),
        (118, 86, 44, 'Sorbetto al limone', 18, 0),
-       (119, 86, 44, 'Torta Saint Honoré', 19, 1);
+       (119, 86, 44, 'Torta Saint Honoré', 19, 1),
+       (125, 91, 49, 'Vitello tonnato', 1, 0),
+       (126, 91, 48, 'Insalata di riso', 4, 0),
+       (127, 91, 49, 'Insalata russa', 28, 1),
+       (128, 91, 50, 'Tiramisù', 27, 0);
 /*!40000 ALTER TABLE `MenuItems`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -303,7 +294,7 @@ CREATE TABLE `MenuSections`
     `position` int(11)  DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 48
+  AUTO_INCREMENT = 51
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -318,7 +309,10 @@ INSERT INTO `MenuSections`
 VALUES (41, 86, 'Antipasti', 0),
        (42, 86, 'Primi', 1),
        (43, 86, 'Secondi', 2),
-       (44, 86, 'Dessert', 3);
+       (44, 86, 'Dessert', 3),
+       (48, 91, 'Primi', 0),
+       (49, 91, 'Secondi', 1),
+       (50, 91, 'Dolci', 2);
 /*!40000 ALTER TABLE `MenuSections`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -338,7 +332,7 @@ CREATE TABLE `Menus`
     `published` tinyint(1) DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 91
+  AUTO_INCREMENT = 92
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -352,7 +346,8 @@ LOCK TABLES `Menus` WRITE;
 INSERT INTO `Menus`
 VALUES (80, 'Coffee break mattutino', 2, 1),
        (82, 'Coffee break pomeridiano', 2, 1),
-       (86, 'Cena di compleanno pesce', 3, 1);
+       (86, 'Cena di compleanno pesce', 3, 1),
+       (91, 'Primo, secondo e dolce', 2, 1);
 /*!40000 ALTER TABLE `Menus`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -371,7 +366,7 @@ CREATE TABLE `Recipes`
     `is_preparation` tinyint(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 24
+  AUTO_INCREMENT = 29
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -405,7 +400,12 @@ VALUES (1, 'Vitello tonnato', 0),
        (20, 'Risotto alla zucca', 0),
        (21, 'Ragù', 1),
        (22, 'Besciamella', 1),
-       (23, 'Sfoglia di pasta', 1);
+       (23, 'Sfoglia di pasta', 1),
+       (24, 'Crema al mascarpone', 1),
+       (25, 'Savoiardi artigianali', 1),
+       (26, 'Maionese', 1),
+       (27, 'Tiramisù', 0),
+       (28, 'Insalata russa', 0);
 /*!40000 ALTER TABLE `Recipes`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -479,7 +479,7 @@ VALUES (1, 2, 'Cena', 86, 0, '2020-08-13', '20:00:00', '23:30:00', 25),
        (3, 1, 'Colazione di lavoro', 0, 0, '2020-09-25', '13:00:00', '14:00:00', 80),
        (4, 1, 'Coffee break pomeriggio', 0, 82, '2020-09-25', '16:00:00', '16:30:00', 100),
        (5, 1, 'Cena sociale', 0, 0, '2020-09-25', '20:00:00', '22:30:00', 40),
-       (6, 3, 'Pranzo giorno 1', 0, 0, '2020-10-02', '12:00:00', '15:00:00', 200),
+       (6, 3, 'Pranzo giorno 1', 91, 91, '2020-10-02', '12:00:00', '15:00:00', 200),
        (7, 3, 'Pranzo giorno 2', 0, 0, '2020-10-03', '12:00:00', '15:00:00', 300),
        (8, 3, 'Pranzo giorno 3', 0, 0, '2020-10-04', '12:00:00', '15:00:00', 400);
 /*!40000 ALTER TABLE `Services`
@@ -495,9 +495,10 @@ DROP TABLE IF EXISTS `Turns`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Turns`
 (
-    `id`         int(11) NOT NULL AUTO_INCREMENT,
-    `time_start` time    NOT NULL,
-    `time_end`   time    NOT NULL,
+    `id`         int(11)    NOT NULL AUTO_INCREMENT,
+    `time_start` time       NOT NULL,
+    `time_end`   time       NOT NULL,
+    `is_full`    tinyint(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 9
@@ -512,14 +513,14 @@ LOCK TABLES `Turns` WRITE;
 /*!40000 ALTER TABLE `Turns`
     DISABLE KEYS */;
 INSERT INTO `Turns`
-VALUES (1, '08:00:00', '10:00:00'),
-       (2, '10:00:00', '12:00:00'),
-       (3, '12:00:00', '14:00:00'),
-       (4, '15:00:00', '17:00:00'),
-       (5, '17:00:00', '19:00:00'),
-       (6, '19:00:00', '21:00:00'),
-       (7, '21:00:00', '23:00:00'),
-       (8, '23:00:00', '01:00:00');
+VALUES (1, '08:00:00', '10:00:00', 0),
+       (2, '10:00:00', '12:00:00', 0),
+       (3, '12:00:00', '14:00:00', 0),
+       (4, '15:00:00', '17:00:00', 0),
+       (5, '17:00:00', '19:00:00', 0),
+       (6, '19:00:00', '21:00:00', 0),
+       (7, '21:00:00', '23:00:00', 0),
+       (8, '23:00:00', '01:00:00', 0);
 /*!40000 ALTER TABLE `Turns`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -595,7 +596,8 @@ VALUES (5, 1),
        (6, 5),
        (6, 6),
        (6, 7),
-       (6, 8);
+       (7, 1),
+       (7, 8);
 /*!40000 ALTER TABLE `UserTurns`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -648,4 +650,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-30 14:00:26
+-- Dump completed on 2020-07-01 10:29:34
