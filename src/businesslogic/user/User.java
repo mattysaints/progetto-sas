@@ -195,11 +195,12 @@ public class User {
         User user = (User) o;
         return id == user.id &&
                 username.equals(user.username) &&
-                roles.equals(user.roles);
+                roles.equals(user.roles) &&
+                isAvailableTurn.equals(user.isAvailableTurn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, roles);
+        return Objects.hash(id, username, roles, isAvailableTurn);
     }
 }

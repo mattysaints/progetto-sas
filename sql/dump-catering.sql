@@ -30,6 +30,7 @@ CREATE TABLE `Events`
     `date_end`              date         DEFAULT NULL,
     `expected_participants` int(11)      DEFAULT NULL,
     `organizer_id`          int(11) NOT NULL,
+    `chef_id`               int(11)      DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 4
@@ -44,9 +45,9 @@ LOCK TABLES `Events` WRITE;
 /*!40000 ALTER TABLE `Events`
     DISABLE KEYS */;
 INSERT INTO `Events`
-VALUES (1, 'Convegno Agile Community', '2020-09-25', '2020-09-25', 100, 2),
-       (2, 'Compleanno di Sara', '2020-08-13', '2020-08-13', 25, 2),
-       (3, 'Fiera del Sedano Rapa', '2020-10-02', '2020-10-04', 400, 1);
+VALUES (1, 'Convegno Agile Community', '2020-09-25', '2020-09-25', 100, 2, NULL),
+       (2, 'Compleanno di Sara', '2020-08-13', '2020-08-13', 25, 2, 2),
+       (3, 'Fiera del Sedano Rapa', '2020-10-02', '2020-10-04', 400, 1, 2);
 /*!40000 ALTER TABLE `Events`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -474,10 +475,10 @@ LOCK TABLES `Services` WRITE;
 /*!40000 ALTER TABLE `Services`
     DISABLE KEYS */;
 INSERT INTO `Services`
-VALUES (1, 2, 'Cena', 86, 0, '2020-08-13', '20:00:00', '23:30:00', 25),
-       (2, 1, 'Coffee break mattino', 0, 80, '2020-09-25', '10:30:00', '11:30:00', 100),
+VALUES (1, 2, 'Cena', 86, 86, '2020-08-13', '20:00:00', '23:30:00', 25),
+       (2, 1, 'Coffee break mattino', 80, 80, '2020-09-25', '10:30:00', '11:30:00', 100),
        (3, 1, 'Colazione di lavoro', 0, 0, '2020-09-25', '13:00:00', '14:00:00', 80),
-       (4, 1, 'Coffee break pomeriggio', 0, 82, '2020-09-25', '16:00:00', '16:30:00', 100),
+       (4, 1, 'Coffee break pomeriggio', 82, 82, '2020-09-25', '16:00:00', '16:30:00', 100),
        (5, 1, 'Cena sociale', 0, 0, '2020-09-25', '20:00:00', '22:30:00', 40),
        (6, 3, 'Pranzo giorno 1', 91, 91, '2020-10-02', '12:00:00', '15:00:00', 200),
        (7, 3, 'Pranzo giorno 2', 0, 0, '2020-10-03', '12:00:00', '15:00:00', 300),
@@ -650,4 +651,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-01 10:29:34
+-- Dump completed on 2020-07-01 11:40:55

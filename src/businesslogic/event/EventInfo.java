@@ -9,7 +9,6 @@ import persistence.ResultHandler;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 
 public class EventInfo implements EventItemInfo {
     private int id;
@@ -26,6 +25,7 @@ public class EventInfo implements EventItemInfo {
     private String frequency;
     private Date endDate;
     private ObservableList<ServiceInfo> services;
+    private User chef;
 
     public EventInfo(String name) {
         this.name = name;
@@ -37,7 +37,8 @@ public class EventInfo implements EventItemInfo {
     }
 
     public String toString() {
-        return name + ": " + dateStart + "-" + dateEnd + ", " + participants + " pp. (" + organizer.getUserName() + ")";
+        return name + ": " + dateStart + "-" + dateEnd + ", " + participants + " pp. (org: " + organizer.getUserName() +
+                (chef.getId() > 0 ? ", chef: " + chef.getUserName() : "") + ")";
     }
 
     // STATIC METHODS FOR PERSISTENCE
@@ -56,6 +57,8 @@ public class EventInfo implements EventItemInfo {
                 e.participants = rs.getInt("expected_participants");
                 int org = rs.getInt("organizer_id");
                 e.organizer = User.loadUserById(org);
+                int chef = rs.getInt("chef_id");
+                e.chef = User.loadUserById(chef);
                 all.add(e);
             }
         });
@@ -86,5 +89,7 @@ public class EventInfo implements EventItemInfo {
         this.endDate = endDate;
     }
 
-
+    public boolean hasChef(User chef) {
+        return this.chef.equals(chef);
+    }
 }

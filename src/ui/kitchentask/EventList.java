@@ -66,11 +66,14 @@ public class EventList {
         eventList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
             if (newV == null)
                 return;
+
             apriButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
-                    || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() == null);
+                    || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() == null
+                    || !((EventInfo) newV.getParent().getValue()).hasChef(CatERing.getInstance().getUserManager().getCurrentUser()));
             creaButton.setDisable(!(newV.getValue() instanceof ServiceInfo)
                     || ((ServiceInfo) newV.getValue()).getKitchenTaskSummary() != null
-                    || ((ServiceInfo) newV.getValue()).getMenu() == null);
+                    || ((ServiceInfo) newV.getValue()).getMenu() == null
+                    || !((EventInfo) newV.getParent().getValue()).hasChef(CatERing.getInstance().getUserManager().getCurrentUser()));
         });
 
         eventList.setRoot(root);
